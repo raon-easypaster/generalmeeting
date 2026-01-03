@@ -150,7 +150,8 @@
             margin-bottom: 40px;
             border-radius: 12px;
             box-shadow: var(--shadow);
-            page-break-inside: avoid; /* Prevent breaking inside sections */
+            /* Prevent breaking inside sections */
+            page-break-inside: avoid; 
             break-inside: avoid;
         }
 
@@ -224,6 +225,9 @@
             height: 300px;
             width: 100%;
             margin: 20px auto 40px auto;
+            /* Ensure charts move to next page if needed */
+            page-break-inside: avoid;
+            break-inside: avoid;
         }
         
         .chart-row {
@@ -314,9 +318,10 @@
                 border: 1px solid #eee; 
                 margin-bottom: 20px; 
                 page-break-inside: avoid;
+                break-inside: avoid;
             }
             .no-print, .btn-download { display: none !important; }
-            .toc { display: none !important; } /* Hide TOC for print if desired, or keep it */
+            .toc { display: none !important; } 
             .memo-area { border: 1px solid #ccc; }
             header { padding: 20px 0; }
         }
@@ -936,7 +941,8 @@
             html2canvas:  { 
                 scale: 2, 
                 useCORS: true,
-                letterRendering: true
+                letterRendering: true,
+                scrollY: 0, // Ensure starting from top to avoid cutting off header
             },
             jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' },
             pagebreak:    { mode: ['avoid-all', 'css', 'legacy'] }
@@ -947,7 +953,7 @@
             html2pdf().set(opt).from(element).save().then(() => {
                 document.body.classList.remove('printing-mode');
             });
-        }, 100);
+        }, 500); // Increased timeout for better stability
     }
 </script>
 
