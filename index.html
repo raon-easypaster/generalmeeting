@@ -34,8 +34,8 @@
             font-family: 'Noto Sans KR', sans-serif;
             background-color: var(--bg-color);
             color: var(--text-color);
-            line-height: 1.7;
-            font-size: 16px;
+            line-height: 1.6; /* Reduced line height slightly */
+            font-size: 15px; /* Slightly smaller base font */
         }
 
         h1, h2, h3, h4 {
@@ -46,48 +46,49 @@
         .container {
             max-width: 900px;
             margin: 0 auto;
-            padding: 40px 40px; /* Increased padding for better print look */
+            padding: 20px 20px; /* Reduced horizontal padding */
             background-color: var(--bg-color);
         }
 
         /* Header Section */
         header {
             text-align: center;
-            padding: 60px 0;
-            margin-bottom: 40px;
+            padding: 40px 0; /* Reduced padding */
+            margin-bottom: 30px;
             border-bottom: 1px solid var(--accent-color);
             position: relative;
         }
 
         header h1 {
-            font-size: 2.5rem;
-            margin-bottom: 15px;
+            font-size: 2.2rem; /* Slightly smaller title */
+            margin-bottom: 10px;
             font-weight: 700;
             letter-spacing: -0.5px;
         }
 
         .header-meta {
-            font-size: 1.1rem;
+            font-size: 1rem;
             color: var(--secondary-color);
-            margin-bottom: 30px;
+            margin-bottom: 20px;
         }
 
         .scripture-box {
             background-color: var(--white);
             border: 1px solid var(--accent-color);
-            padding: 30px;
+            padding: 20px;
             border-radius: 8px;
-            display: inline-block;
-            box-shadow: var(--shadow);
-            max-width: 90%;
+            display: block; 
+            width: 90%; /* Explicit width */
             margin: 0 auto;
+            /* Box shadow handled in print media query */
+            box-shadow: var(--shadow);
         }
 
         .scripture-text {
             font-family: 'Noto Serif KR', serif;
-            font-size: 1.2rem;
+            font-size: 1.1rem;
             font-style: italic;
-            margin-bottom: 10px;
+            margin-bottom: 8px;
             word-break: keep-all;
         }
 
@@ -100,20 +101,20 @@
         /* Navigation / TOC */
         .toc {
             background: var(--white);
-            padding: 30px;
+            padding: 20px;
             border-radius: 12px;
             box-shadow: var(--shadow);
-            margin-bottom: 50px;
+            margin-bottom: 40px;
         }
 
         .toc h2 {
-            font-size: 1.5rem;
+            font-size: 1.4rem;
             text-align: center;
-            margin-bottom: 20px;
+            margin-bottom: 15px;
             border-bottom: 2px solid var(--accent-color);
-            padding-bottom: 10px;
+            padding-bottom: 8px;
             display: inline-block;
-            min-width: 200px;
+            min-width: 180px;
             position: relative;
             left: 50%;
             transform: translateX(-50%);
@@ -123,7 +124,7 @@
             display: flex;
             flex-wrap: wrap;
             justify-content: center;
-            gap: 15px;
+            gap: 10px;
             list-style: none;
         }
 
@@ -131,10 +132,11 @@
             text-decoration: none;
             color: var(--primary-color);
             font-weight: 500;
-            padding: 8px 16px;
+            padding: 6px 12px;
             border: 1px solid var(--accent-color);
             border-radius: 20px;
             transition: all 0.3s ease;
+            font-size: 0.9rem;
         }
 
         .toc a:hover {
@@ -146,28 +148,27 @@
         /* Content Sections */
         section {
             background: var(--white);
-            padding: 40px;
-            margin-bottom: 40px;
+            padding: 30px; /* Reduced padding */
+            margin-bottom: 30px;
             border-radius: 12px;
             box-shadow: var(--shadow);
-            /* Prevent breaking inside sections */
             page-break-inside: avoid; 
             break-inside: avoid;
         }
 
         section h2 {
-            font-size: 1.8rem;
-            margin-bottom: 25px;
-            padding-left: 15px;
-            border-left: 5px solid var(--secondary-color);
+            font-size: 1.6rem;
+            margin-bottom: 20px;
+            padding-left: 12px;
+            border-left: 4px solid var(--secondary-color);
         }
 
         section h3 {
-            font-size: 1.3rem;
-            margin: 30px 0 15px 0;
+            font-size: 1.2rem;
+            margin: 25px 0 12px 0;
             color: var(--secondary-color);
             border-bottom: 1px dashed var(--accent-color);
-            padding-bottom: 5px;
+            padding-bottom: 4px;
         }
 
         /* Lists */
@@ -176,10 +177,10 @@
         }
 
         li {
-            margin-bottom: 8px;
+            margin-bottom: 6px;
         }
 
-        /* Tables */
+        /* Tables - Compact Style for Finance */
         .table-responsive {
             overflow-x: auto;
         }
@@ -187,13 +188,13 @@
         table {
             width: 100%;
             border-collapse: collapse;
-            margin-bottom: 20px;
-            font-size: 0.95rem;
-            min-width: 100%; /* Changed to 100% for better fit */
+            margin-bottom: 15px;
+            font-size: 0.85rem; /* Smaller font for tables */
+            min-width: 100%;
         }
 
         th, td {
-            padding: 10px 12px;
+            padding: 6px 8px; /* Reduced padding for compact rows */
             text-align: left;
             border-bottom: 1px solid var(--accent-color);
         }
@@ -222,10 +223,9 @@
         /* Charts */
         .chart-container {
             position: relative;
-            height: 300px;
+            height: 250px; /* Reduced chart height */
             width: 100%;
-            margin: 20px auto 40px auto;
-            /* Ensure charts move to next page if needed */
+            margin: 15px auto 30px auto;
             page-break-inside: avoid;
             break-inside: avoid;
         }
@@ -245,10 +245,10 @@
 
         /* Editable Memo Area */
         .memo-area {
-            min-height: 150px;
+            min-height: 120px;
             border: 2px dashed #d7ccc8;
             border-radius: 8px;
-            padding: 20px;
+            padding: 15px;
             color: #3e2723;
             background-color: #fafafa;
             outline: none;
@@ -269,9 +269,9 @@
         /* Footer */
         footer {
             text-align: center;
-            padding: 40px 0;
+            padding: 30px 0;
             color: #888;
-            font-size: 0.9rem;
+            font-size: 0.85rem;
             border-top: 1px solid var(--accent-color);
         }
 
@@ -297,40 +297,51 @@
             background-color: #3e2723;
         }
 
-        /* PDF & Print Specifics */
+        /* PDF & Print Specifics - CRITICAL FIXES */
         @media print {
             body { 
                 background: white !important; 
                 color: black !important; 
                 -webkit-print-color-adjust: exact; 
                 print-color-adjust: exact;
+                font-size: 14px; /* Ensure readable print font size */
             }
             .container { 
                 max-width: 100% !important; 
                 width: 100% !important; 
-                padding: 0 !important; 
+                padding: 0 10px !important; /* Minimal horizontal padding for print */
                 margin: 0 !important; 
                 box-shadow: none !important;
                 background-color: white !important;
             }
-            section { 
+            section, .scripture-box, .toc { 
                 box-shadow: none !important; 
-                border: 1px solid #eee; 
-                margin-bottom: 20px; 
-                page-break-inside: avoid;
-                break-inside: avoid;
+                border: 1px solid #ccc !important;
+                margin-bottom: 15px; /* Reduced margin between sections */
             }
+            
+            /* Font Fix for PDF Generation - Force System Font */
+            .scripture-text, .scripture-ref, h1, h2, h3, h4, body, p, td, th, li {
+                font-family: serif, 'Times New Roman' !important; 
+                color: #000 !important;
+            }
+            
             .no-print, .btn-download { display: none !important; }
-            .toc { display: none !important; } 
-            .memo-area { border: 1px solid #ccc; }
-            header { padding: 20px 0; }
+            header { padding: 10px 0 !important; margin-bottom: 20px !important; }
+            
+            /* Specific fix for Scripture Box visibility */
+            .scripture-box {
+                background-color: #fff !important;
+                border: 1px solid #000 !important;
+                color: #000 !important;
+            }
         }
 
         /* Responsive */
         @media (max-width: 768px) {
             header h1 { font-size: 1.8rem; }
-            section { padding: 25px; }
-            .scripture-box { max-width: 100%; }
+            section { padding: 20px; }
+            .scripture-box { width: 100%; }
             .btn-download { bottom: 20px; top: auto; right: 20px; }
         }
     </style>
@@ -953,7 +964,7 @@
             html2pdf().set(opt).from(element).save().then(() => {
                 document.body.classList.remove('printing-mode');
             });
-        }, 500); // Increased timeout for better stability
+        }, 1000); // Increased timeout to 1000ms for better stability with fonts
     }
 </script>
 
