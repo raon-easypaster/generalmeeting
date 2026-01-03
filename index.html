@@ -46,8 +46,8 @@
         .container {
             max-width: 900px;
             margin: 0 auto;
-            padding: 40px 20px;
-            background-color: var(--bg-color); /* Ensure background for PDF */
+            padding: 40px 40px; /* Increased padding for better print look */
+            background-color: var(--bg-color);
         }
 
         /* Header Section */
@@ -79,7 +79,7 @@
             border-radius: 8px;
             display: inline-block;
             box-shadow: var(--shadow);
-            max-width: 80%;
+            max-width: 90%;
             margin: 0 auto;
         }
 
@@ -150,8 +150,8 @@
             margin-bottom: 40px;
             border-radius: 12px;
             box-shadow: var(--shadow);
-            transition: transform 0.2s ease;
-            page-break-inside: avoid; /* Avoid breaking sections in PDF */
+            page-break-inside: avoid; /* Prevent breaking inside sections */
+            break-inside: avoid;
         }
 
         section h2 {
@@ -188,11 +188,11 @@
             border-collapse: collapse;
             margin-bottom: 20px;
             font-size: 0.95rem;
-            min-width: 600px; /* Ensure tables don't get too squashed on mobile */
+            min-width: 100%; /* Changed to 100% for better fit */
         }
 
         th, td {
-            padding: 12px 15px;
+            padding: 10px 12px;
             text-align: left;
             border-bottom: 1px solid var(--accent-color);
         }
@@ -230,11 +230,13 @@
             display: flex;
             flex-wrap: wrap;
             gap: 20px;
+            justify-content: center;
         }
         
         .chart-col {
             flex: 1;
             min-width: 300px;
+            max-width: 500px;
         }
 
         /* Editable Memo Area */
@@ -291,14 +293,32 @@
             background-color: #3e2723;
         }
 
-        /* Print Specifics */
+        /* PDF & Print Specifics */
         @media print {
-            body { background: white; color: black; }
-            .container { max-width: 100%; padding: 0; margin: 0; }
-            section { box-shadow: none; border: 1px solid #ccc; page-break-inside: avoid; margin-bottom: 20px; }
+            body { 
+                background: white !important; 
+                color: black !important; 
+                -webkit-print-color-adjust: exact; 
+                print-color-adjust: exact;
+            }
+            .container { 
+                max-width: 100% !important; 
+                width: 100% !important; 
+                padding: 0 !important; 
+                margin: 0 !important; 
+                box-shadow: none !important;
+                background-color: white !important;
+            }
+            section { 
+                box-shadow: none !important; 
+                border: 1px solid #eee; 
+                margin-bottom: 20px; 
+                page-break-inside: avoid;
+            }
             .no-print, .btn-download { display: none !important; }
-            .toc { display: none; }
+            .toc { display: none !important; } /* Hide TOC for print if desired, or keep it */
             .memo-area { border: 1px solid #ccc; }
+            header { padding: 20px 0; }
         }
 
         /* Responsive */
@@ -306,7 +326,7 @@
             header h1 { font-size: 1.8rem; }
             section { padding: 25px; }
             .scripture-box { max-width: 100%; }
-            .btn-download { bottom: 20px; top: auto; right: 20px; } /* Floating bottom on mobile */
+            .btn-download { bottom: 20px; top: auto; right: 20px; }
         }
     </style>
 </head>
@@ -314,7 +334,7 @@
 
 <!-- Download Button -->
 <button class="btn-download no-print" onclick="downloadPDF()" data-html2canvas-ignore="true">
-    📄 PDF 다운로드
+    📄 PDF 다운로드 (수정됨)
 </button>
 
 <div class="container" id="pdf-content">
@@ -374,7 +394,7 @@
         <h2>Ⅲ. 회원명단 <small style="font-size:0.6em; color:#888;">(2025년 12월 말 기준)</small></h2>
         
         <!-- Member Chart -->
-        <div class="chart-container" style="max-width: 500px;">
+        <div class="chart-container" style="max-width: 500px; margin: 0 auto 30px auto;">
             <canvas id="memberChart"></canvas>
         </div>
 
@@ -493,9 +513,6 @@
         <div class="chart-row">
             <div class="chart-col">
                 <canvas id="financeBudgetChart"></canvas>
-            </div>
-            <div class="chart-col">
-                 <!-- Second chart placeholder or remove if not needed. Using column width for responsiveness -->
             </div>
         </div>
         
@@ -847,7 +864,7 @@
 </div>
 
 <script>
-    // Chart.js Configuration
+    // Chart.js Configuration (Disabled animations for print/pdf)
     
     // 1. Member Distribution Chart (Doughnut)
     const ctxMember = document.getElementById('memberChart').getContext('2d');
@@ -869,6 +886,7 @@
         options: {
             responsive: true,
             maintainAspectRatio: false,
+            animation: { duration: 0 }, // Disable animation for PDF capture
             plugins: {
                 legend: { position: 'bottom' },
                 title: { display: true, text: '2025년 회원 구성 현황' }
@@ -893,6 +911,7 @@
         options: {
             responsive: true,
             maintainAspectRatio: false,
+            animation: { duration: 0 }, // Disable animation for PDF capture
             plugins: {
                 legend: { display: false },
                 title: { display: true, text: '일반재정 지출 흐름 (결산 및 예산)' }
@@ -903,19 +922,32 @@
         }
     });
 
-    // PDF Download Function
+    // Optimized PDF Download Function
     function downloadPDF() {
         const element = document.getElementById('pdf-content');
+        
+        // Add a class to indicate printing mode
+        document.body.classList.add('printing-mode');
+
         const opt = {
-            margin:       10,
+            margin:       [10, 10, 10, 10], // Top, Left, Bottom, Right
             filename:     '2025_라온동행교회_사무총회록.pdf',
             image:        { type: 'jpeg', quality: 0.98 },
-            html2canvas:  { scale: 2 },
-            jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' }
+            html2canvas:  { 
+                scale: 2, 
+                useCORS: true,
+                letterRendering: true
+            },
+            jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' },
+            pagebreak:    { mode: ['avoid-all', 'css', 'legacy'] }
         };
 
-        // Promise based usage
-        html2pdf().set(opt).from(element).save();
+        // Delay slightly to ensure styles are applied
+        setTimeout(() => {
+            html2pdf().set(opt).from(element).save().then(() => {
+                document.body.classList.remove('printing-mode');
+            });
+        }, 100);
     }
 </script>
 
