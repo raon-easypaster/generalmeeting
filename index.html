@@ -34,8 +34,8 @@
             font-family: 'Noto Sans KR', sans-serif;
             background-color: var(--bg-color);
             color: var(--text-color);
-            line-height: 1.6; /* Reduced line height slightly */
-            font-size: 15px; /* Slightly smaller base font */
+            line-height: 1.6;
+            font-size: 15px;
         }
 
         h1, h2, h3, h4 {
@@ -46,21 +46,21 @@
         .container {
             max-width: 900px;
             margin: 0 auto;
-            padding: 20px 20px; /* Reduced horizontal padding */
+            padding: 20px 20px;
             background-color: var(--bg-color);
         }
 
         /* Header Section */
         header {
             text-align: center;
-            padding: 40px 0; /* Reduced padding */
+            padding: 40px 0;
             margin-bottom: 30px;
             border-bottom: 1px solid var(--accent-color);
             position: relative;
         }
 
         header h1 {
-            font-size: 2.2rem; /* Slightly smaller title */
+            font-size: 2.2rem;
             margin-bottom: 10px;
             font-weight: 700;
             letter-spacing: -0.5px;
@@ -78,9 +78,8 @@
             padding: 20px;
             border-radius: 8px;
             display: block; 
-            width: 90%; /* Explicit width */
+            width: 90%;
             margin: 0 auto;
-            /* Box shadow handled in print media query */
             box-shadow: var(--shadow);
         }
 
@@ -148,17 +147,10 @@
         /* Content Sections */
         section {
             background: var(--white);
-            padding: 30px; /* Reduced padding */
+            padding: 30px;
             margin-bottom: 30px;
             border-radius: 12px;
             box-shadow: var(--shadow);
-            page-break-inside: avoid; 
-            break-inside: avoid;
-        }
-
-        section h2, section h3, section h4 {
-            page-break-after: avoid;
-            break-after: avoid;
         }
 
         section h2 {
@@ -176,6 +168,19 @@
             padding-bottom: 4px;
         }
 
+        /* Content Grouping for Print */
+        .keep-together {
+            page-break-inside: avoid;
+            break-inside: avoid;
+        }
+
+        /* Force Page Break */
+        .print-page-break {
+            page-break-before: always;
+            break-before: page;
+            margin-top: 30px; /* Visual separation for screen */
+        }
+
         /* Lists */
         ol, ul {
             padding-left: 20px;
@@ -185,7 +190,7 @@
             margin-bottom: 6px;
         }
 
-        /* Tables - Compact Style for Finance */
+        /* Tables */
         .table-responsive {
             overflow-x: auto;
         }
@@ -194,12 +199,12 @@
             width: 100%;
             border-collapse: collapse;
             margin-bottom: 15px;
-            font-size: 0.85rem; /* Smaller font for tables */
+            font-size: 0.85rem;
             min-width: 100%;
         }
 
         th, td {
-            padding: 6px 8px; /* Reduced padding for compact rows */
+            padding: 6px 8px;
             text-align: left;
             border-bottom: 1px solid var(--accent-color);
         }
@@ -228,7 +233,7 @@
         /* Charts */
         .chart-container {
             position: relative;
-            height: 250px; /* Reduced chart height */
+            height: 250px;
             width: 100%;
             margin: 15px auto 30px auto;
             page-break-inside: avoid;
@@ -302,19 +307,19 @@
             background-color: #3e2723;
         }
 
-        /* PDF & Print Specifics - CRITICAL FIXES */
+        /* PDF & Print Specifics */
         @media print {
             body { 
                 background: white !important; 
                 color: black !important; 
                 -webkit-print-color-adjust: exact; 
                 print-color-adjust: exact;
-                font-size: 14px; /* Ensure readable print font size */
+                font-size: 14px;
             }
             .container { 
                 max-width: 100% !important; 
                 width: 100% !important; 
-                padding: 0 10px !important; /* Minimal horizontal padding for print */
+                padding: 0 10px !important;
                 margin: 0 !important; 
                 box-shadow: none !important;
                 background-color: white !important;
@@ -322,10 +327,10 @@
             section, .scripture-box, .toc { 
                 box-shadow: none !important; 
                 border: 1px solid #ccc !important;
-                margin-bottom: 15px; /* Reduced margin between sections */
+                margin-bottom: 15px;
             }
             
-            /* Font Fix for PDF Generation - Force System Font */
+            /* Font Fix for PDF Generation */
             .scripture-text, .scripture-ref, h1, h2, h3, h4, body, p, td, th, li {
                 font-family: serif, 'Times New Roman' !important; 
                 color: #000 !important;
@@ -334,11 +339,24 @@
             .no-print, .btn-download { display: none !important; }
             header { padding: 10px 0 !important; margin-bottom: 20px !important; }
             
-            /* Specific fix for Scripture Box visibility */
             .scripture-box {
                 background-color: #fff !important;
                 border: 1px solid #000 !important;
                 color: #000 !important;
+            }
+
+            /* Ensure Page Breaks Work in Print with extra space */
+            .print-page-break {
+                page-break-before: always !important;
+                break-before: page !important;
+                margin-top: 0 !important;
+                padding-top: 50px !important; /* Added Padding for Title Safety */
+                display: block !important;
+            }
+            
+            .keep-together {
+                page-break-inside: avoid !important;
+                break-inside: avoid !important;
             }
         }
 
@@ -384,7 +402,7 @@
     </nav>
 
     <!-- 1. 개회예배 -->
-    <section id="worship">
+    <section id="worship" class="keep-together">
         <h2>Ⅰ. 개회예배 <small style="font-size:0.6em; color:#888;">(인도: 이광복)</small></h2>
         <ol>
             <li><strong>찬 송:</strong> 우리에겐 소원이 하나 있네 (다같이)</li>
@@ -395,7 +413,7 @@
     </section>
 
     <!-- 2. 본회의 -->
-    <section id="meeting">
+    <section id="meeting" class="keep-together">
         <h2>Ⅱ. 본회의 <small style="font-size:0.6em; color:#888;">(의장: 이광복)</small></h2>
         <ol>
             <li><strong>서기선정:</strong> 헌법 제6장 46조 ①항 의거 의장 지명 (의장)</li>
@@ -419,109 +437,121 @@
             <canvas id="memberChart"></canvas>
         </div>
 
-        <h3>1. 정회원 (총 18명)</h3>
-        <div class="table-responsive">
-            <table>
-                <tr>
-                    <th width="20%">구분</th>
-                    <th>명단 (가나다순)</th>
-                    <th width="15%">인원</th>
-                </tr>
-                <tr>
-                    <td class="center"><strong>남자</strong></td>
-                    <td>김준호 박상민 안현진 오상석 오승현 이광복 이광진 이동현 임성호 최동호 황세영</td>
-                    <td class="center">11명</td>
-                </tr>
-                <tr>
-                    <td class="center"><strong>여자</strong></td>
-                    <td>강윤정 박영애 안지선 윤혜영 정미경 지하연 홍윤희</td>
-                    <td class="center">7명</td>
-                </tr>
-            </table>
+        <div class="keep-together">
+            <h3>1. 정회원 (총 18명)</h3>
+            <div class="table-responsive">
+                <table>
+                    <tr>
+                        <th width="20%">구분</th>
+                        <th>명단 (가나다순)</th>
+                        <th width="15%">인원</th>
+                    </tr>
+                    <tr>
+                        <td class="center"><strong>남자</strong></td>
+                        <td>김준호 박상민 안현진 오상석 오승현 이광복 이광진 이동현 임성호 최동호 황세영</td>
+                        <td class="center">11명</td>
+                    </tr>
+                    <tr>
+                        <td class="center"><strong>여자</strong></td>
+                        <td>강윤정 박영애 안지선 윤혜영 정미경 지하연 홍윤희</td>
+                        <td class="center">7명</td>
+                    </tr>
+                </table>
+            </div>
         </div>
 
-        <h3>2. 준회원 및 교회학교 (총 10명)</h3>
-        <div class="table-responsive">
-            <table>
-                <tr>
-                    <th width="20%">구분</th>
-                    <th>명단</th>
-                    <th width="15%">인원</th>
-                </tr>
-                <tr>
-                    <td class="center"><strong>준회원</strong></td>
-                    <td>(남) 김영환 이형주<br>(여) 원유정</td>
-                    <td class="center">3명</td>
-                </tr>
-                <tr>
-                    <td class="center"><strong>교회학교</strong></td>
-                    <td>(남) 이윤준(5) 이윤한(5)<br>(여) 안지율(7) 최아란(13) 이다예(14) 오승하(15) 이주예(16)</td>
-                    <td class="center">7명</td>
-                </tr>
-                <tr style="background-color: #eceff1;">
-                    <td colspan="2" class="center"><strong>총 재적 인원</strong></td>
-                    <td class="center"><strong>28명</strong></td>
-                </tr>
-            </table>
+        <div class="keep-together">
+            <h3>2. 준회원 및 교회학교 (총 10명)</h3>
+            <div class="table-responsive">
+                <table>
+                    <tr>
+                        <th width="20%">구분</th>
+                        <th>명단</th>
+                        <th width="15%">인원</th>
+                    </tr>
+                    <tr>
+                        <td class="center"><strong>준회원</strong></td>
+                        <td>(남) 김영환 이형주<br>(여) 원유정</td>
+                        <td class="center">3명</td>
+                    </tr>
+                    <tr>
+                        <td class="center"><strong>교회학교</strong></td>
+                        <td>(남) 이윤준(5) 이윤한(5)<br>(여) 안지율(7) 최아란(13) 이다예(14) 오승하(15) 이주예(16)</td>
+                        <td class="center">7명</td>
+                    </tr>
+                    <tr style="background-color: #eceff1;">
+                        <td colspan="2" class="center"><strong>총 재적 인원</strong></td>
+                        <td class="center"><strong>28명</strong></td>
+                    </tr>
+                </table>
+            </div>
         </div>
     </section>
 
     <!-- 4. 2025년 교회보고 -->
-    <section id="report-2025">
+    <section id="report-2025" class="print-page-break">
         <h2>Ⅳ. 2025년도 교회보고</h2>
 
-        <h3>1. 인사 및 교세 보고</h3>
-        <ul>
-            <li><strong>교역자:</strong> 이광복 목사 (1명), 박정탁 전도사(사임)</li>
-            <li><strong>후원선교사 (7가정):</strong> 김병훈/이정아(미얀마), 손현성/이경호(동티모르), 오소원/유수연(중국), 김종한/김윤숙(라오스), 한이삭/변찬은(헝가리), 이정형/김소연(몽골), 전민수/이은영(방글라데시)</li>
-            <li><strong>교회학교:</strong> 유치부(3), 유년부(0), 초등부(1), 중등부(3), 고등부(0) / 합계 7명</li>
-            <li><strong>신급 분포:</strong> 구도인(3), 세례인(18) / 합계 21명 (유아/유소년 세례 3명 포함)</li>
-        </ul>
-
-        <h3>2. 예배 및 예식 보고</h3>
-        <ul>
-            <li><strong>예배:</strong> 주일예배 52회(부활, 맥추, 추수), 성탄축하예배 1회, 송구영신예배 1회</li>
-            <li><strong>예식:</strong> 세례예식 1회(황세영), 성찬예식 3회, 헌아식 0회</li>
-        </ul>
-
-        <h3>3. 경조사 보고</h3>
-        <div style="background: #f8f8f8; padding: 20px; border-radius: 8px;">
-            <h4 style="margin-bottom: 10px; color: var(--secondary-color);">1) 외부 경조사</h4>
-            <ul style="margin-bottom: 20px;">
-                <li><strong>장례식 (3회):</strong> 이명재 목사 모친(실로암), 이상철 목사 부친(부천영광), 이선학 목사 모친(주사랑)</li>
-                <li><strong>결혼식 (2회):</strong> 이명재 목사 자녀(실로암), 전병권 목사 자녀(신현)</li>
-                <li><strong>취임식/개소식:</strong> 심재환 목사(주님사랑의) / 공존</li>
-                <li><strong>임직식:</strong> 실로암, 은강, 한샘, 주사랑, 부천영광</li>
-            </ul>
-            <h4 style="margin-bottom: 10px; color: var(--secondary-color);">2) 내부 경조사</h4>
+        <div class="keep-together">
+            <h3>1. 인사 및 교세 보고</h3>
             <ul>
-                <li><strong>장례식 (1회):</strong> 안현진 부친</li>
-                <li><strong>졸업식 (1회):</strong> 이다예</li>
-                <li style="color:#888;">기타: 결혼 0회, 돌 0회, 군입대 0회, 임직식 0회</li>
+                <li><strong>교역자:</strong> 이광복 목사 (1명), 박정탁 전도사(사임)</li>
+                <li><strong>후원선교사 (7가정):</strong> 김병훈/이정아(미얀마), 손현성/이경호(동티모르), 오소원/유수연(중국), 김종한/김윤숙(라오스), 한이삭/변찬은(헝가리), 이정형/김소연(몽골), 전민수/이은영(방글라데시)</li>
+                <li><strong>교회학교:</strong> 유치부(3), 유년부(0), 초등부(1), 중등부(3), 고등부(0) / 합계 7명</li>
+                <li><strong>신급 분포:</strong> 구도인(3), 세례인(18) / 합계 21명 (유아/유소년 세례 3명 포함)</li>
             </ul>
         </div>
 
-        <h3>4. 주요 행사 보고</h3>
-        <div class="table-responsive">
-            <table>
-                <tr>
-                    <th width="30%">구분</th>
-                    <th>내용</th>
-                </tr>
-                <tr>
-                    <td class="center"><strong>내부 행사</strong></td>
-                    <td>
-                        컴퓨터 활용 특강/청소년 겨울수련회(1월), 다음세대 주관예배(2/4/10월), 부활절/야외예배(4월), 독서모임(5월), M.T(6월), 맥추감사절(7월), 추수감사절(11월), 성탄/송구영신/AI 활용 교육(12월)<br>
-                        <span style="display:block; margin-top:5px; color:#5d4037; font-size:0.9em;">※ 기타: 생일 축하, 남성/여성/청소년 모임</span>
-                    </td>
-                </tr>
-                <tr>
-                    <td class="center"><strong>외부 행사</strong></td>
-                    <td>
-                        부천지방회/선교적교회 모임(1월), 지방회(2월), 징검다리/커피프로그램(3월), 총동문대회(4월), 군방문/외부설교(6-7월), 교역자회 수련회(10월), AI 활용 세미나(12월)
-                    </td>
-                </tr>
-            </table>
+        <div class="keep-together">
+            <h3>2. 예배 및 예식 보고</h3>
+            <ul>
+                <li><strong>예배:</strong> 주일예배 52회(부활, 맥추, 추수), 성탄축하예배 1회, 송구영신예배 1회</li>
+                <li><strong>예식:</strong> 세례예식 1회(황세영), 성찬예식 3회, 헌아식 0회</li>
+            </ul>
+        </div>
+
+        <div class="keep-together">
+            <h3>3. 경조사 보고</h3>
+            <div style="background: #f8f8f8; padding: 20px; border-radius: 8px;">
+                <h4 style="margin-bottom: 10px; color: var(--secondary-color);">1) 외부 경조사</h4>
+                <ul style="margin-bottom: 20px;">
+                    <li><strong>장례식 (3회):</strong> 이명재 목사 모친(실로암), 이상철 목사 부친(부천영광), 이선학 목사 모친(주사랑)</li>
+                    <li><strong>결혼식 (2회):</strong> 이명재 목사 자녀(실로암), 전병권 목사 자녀(신현)</li>
+                    <li><strong>취임식/개소식:</strong> 심재환 목사(주님사랑의) / 공존</li>
+                    <li><strong>임직식:</strong> 실로암, 은강, 한샘, 주사랑, 부천영광</li>
+                </ul>
+                <h4 style="margin-bottom: 10px; color: var(--secondary-color);">2) 내부 경조사</h4>
+                <ul>
+                    <li><strong>장례식 (1회):</strong> 안현진 부친</li>
+                    <li><strong>졸업식 (1회):</strong> 이다예</li>
+                    <li style="color:#888;">기타: 결혼 0회, 돌 0회, 군입대 0회, 임직식 0회</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="keep-together">
+            <h3>4. 주요 행사 보고</h3>
+            <div class="table-responsive">
+                <table>
+                    <tr>
+                        <th width="30%">구분</th>
+                        <th>내용</th>
+                    </tr>
+                    <tr>
+                        <td class="center"><strong>내부 행사</strong></td>
+                        <td>
+                            컴퓨터 활용 특강/청소년 겨울수련회(1월), 다음세대 주관예배(2/4/10월), 부활절/야외예배(4월), 독서모임(5월), M.T(6월), 맥추감사절(7월), 추수감사절(11월), 성탄/송구영신/AI 활용 교육(12월)<br>
+                            <span style="display:block; margin-top:5px; color:#5d4037; font-size:0.9em;">※ 기타: 생일 축하, 남성/여성/청소년 모임</span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="center"><strong>외부 행사</strong></td>
+                        <td>
+                            부천지방회/선교적교회 모임(1월), 지방회(2월), 징검다리/커피프로그램(3월), 총동문대회(4월), 군방문/외부설교(6-7월), 교역자회 수련회(10월), AI 활용 세미나(12월)
+                        </td>
+                    </tr>
+                </table>
+            </div>
         </div>
     </section>
 
@@ -537,312 +567,318 @@
             </div>
         </div>
         
-        <h3>1. 일반재정 수입</h3>
-        <div class="table-responsive">
-            <table>
-                <thead>
-                    <tr>
-                        <th>항목</th>
-                        <th>2024년 결산</th>
-                        <th>2025년 결산</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td class="center">감사헌금</td>
-                        <td class="number">8,654,000</td>
-                        <td class="number">10,361,000</td>
-                    </tr>
-                    <tr>
-                        <td class="center">전주태평</td>
-                        <td class="number">2,400,000</td>
-                        <td class="number">2,400,000</td>
-                    </tr>
-                    <tr>
-                        <td class="center">성광</td>
-                        <td class="number">1,200,000</td>
-                        <td class="number">1,200,000</td>
-                    </tr>
-                    <tr>
-                        <td class="center">성천</td>
-                        <td class="number">600,000</td>
-                        <td class="number">600,000</td>
-                    </tr>
-                    <tr>
-                        <td class="center">이선우</td>
-                        <td class="number">600,000</td>
-                        <td class="number">0</td>
-                    </tr>
-                    <tr>
-                        <td class="center">장혜숙</td>
-                        <td class="number">600,000</td>
-                        <td class="number">600,000</td>
-                    </tr>
-                    <tr>
-                        <td class="center">임성현</td>
-                        <td class="number">400,000</td>
-                        <td class="number">600,000</td>
-                    </tr>
-                    <tr>
-                        <td class="center">잡수익/이자</td>
-                        <td class="number">194,000</td>
-                        <td class="number">2,419</td>
-                    </tr>
-                </tbody>
-                <tfoot>
-                    <tr>
-                        <td class="center">합 계</td>
-                        <td class="number">13,435,378</td>
-                        <td class="number">15,763,419</td>
-                    </tr>
-                </tfoot>
-            </table>
-            <p style="font-size: 0.85em; color: #666; margin-top: -10px;">* 참고: 라온트리 보증금 10,000,000원 별도</p>
+        <div class="keep-together">
+            <h3>1. 일반재정 수입</h3>
+            <div class="table-responsive">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>항목</th>
+                            <th>2024년 결산</th>
+                            <th>2025년 결산</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="center">감사헌금</td>
+                            <td class="number">8,654,000</td>
+                            <td class="number">10,361,000</td>
+                        </tr>
+                        <tr>
+                            <td class="center">전주태평</td>
+                            <td class="number">2,400,000</td>
+                            <td class="number">2,400,000</td>
+                        </tr>
+                        <tr>
+                            <td class="center">성광</td>
+                            <td class="number">1,200,000</td>
+                            <td class="number">1,200,000</td>
+                        </tr>
+                        <tr>
+                            <td class="center">성천</td>
+                            <td class="number">600,000</td>
+                            <td class="number">600,000</td>
+                        </tr>
+                        <tr>
+                            <td class="center">이선우</td>
+                            <td class="number">600,000</td>
+                            <td class="number">0</td>
+                        </tr>
+                        <tr>
+                            <td class="center">장혜숙</td>
+                            <td class="number">600,000</td>
+                            <td class="number">600,000</td>
+                        </tr>
+                        <tr>
+                            <td class="center">임성현</td>
+                            <td class="number">400,000</td>
+                            <td class="number">600,000</td>
+                        </tr>
+                        <tr>
+                            <td class="center">잡수익/이자</td>
+                            <td class="number">194,000</td>
+                            <td class="number">2,419</td>
+                        </tr>
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <td class="center">합 계</td>
+                            <td class="number">13,435,378</td>
+                            <td class="number">15,763,419</td>
+                        </tr>
+                    </tfoot>
+                </table>
+                <p style="font-size: 0.85em; color: #666; margin-top: -10px;">* 참고: 라온트리 보증금 10,000,000원 별도</p>
+            </div>
         </div>
 
-        <h3>2. 일반재정 지출</h3>
-        <div class="table-responsive">
-            <table>
-                <thead>
-                    <tr>
-                        <th>항목</th>
-                        <th>2024년 결산</th>
-                        <th>2025년 예산</th>
-                        <th>2025년 결산</th>
-                        <th>2026년 예산</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td class="center">퇴직적립금(후원금)</td>
-                        <td class="number">6,000,000</td>
-                        <td class="number">6,000,000</td>
-                        <td class="number">6,000,000</td>
-                        <td class="number">6,000,000</td>
-                    </tr>
-                    <tr>
-                        <td class="center">교제비(식대/간식)</td>
-                        <td class="number">4,608,869</td>
-                        <td class="number">3,389,868</td>
-                        <td class="number">3,770,368</td>
-                        <td class="number">5,000,000</td>
-                    </tr>
-                    <tr>
-                        <td class="center">서무비</td>
-                        <td class="number">4,400</td>
-                        <td class="number">100,000</td>
-                        <td class="number">30,300</td>
-                        <td class="number">100,000</td>
-                    </tr>
-                    <tr>
-                        <td class="center">교육비</td>
-                        <td class="number">114,600</td>
-                        <td class="number">500,000</td>
-                        <td class="number">9,500</td>
-                        <td class="number">500,000</td>
-                    </tr>
-                    <tr>
-                        <td class="center">행사비</td>
-                        <td class="number">111,800</td>
-                        <td class="number">500,000</td>
-                        <td class="number">121,800</td>
-                        <td class="number">500,000</td>
-                    </tr>
-                    <tr>
-                        <td class="center">비품비</td>
-                        <td class="number">672,709</td>
-                        <td class="number">500,000</td>
-                        <td class="number">755,350</td>
-                        <td class="number">500,000</td>
-                    </tr>
-                    <tr>
-                        <td class="center">경조비</td>
-                        <td class="number">1,060,000</td>
-                        <td class="number">1,000,000</td>
-                        <td class="number">1,460,000</td>
-                        <td class="number">1,500,000</td>
-                    </tr>
-                    <tr>
-                        <td class="center">강사비</td>
-                        <td class="number">200,000</td>
-                        <td class="number">500,000</td>
-                        <td class="number">200,000</td>
-                        <td class="number">500,000</td>
-                    </tr>
-                    <tr>
-                        <td class="center">상회비(지방회/총회)</td>
-                        <td class="number">519,000</td>
-                        <td class="number">500,000</td>
-                        <td class="number">463,000</td>
-                        <td class="number">1,000,000</td>
-                    </tr>
-                    <tr>
-                        <td class="center">접대비</td>
-                        <td class="number">60,000</td>
-                        <td class="number">1,000,000</td>
-                        <td class="number">0</td>
-                        <td class="number">500,000</td>
-                    </tr>
-                    <tr>
-                        <td class="center">심방비</td>
-                        <td class="number">84,000</td>
-                        <td class="number">0</td>
-                        <td class="number">0</td>
-                        <td class="number">0</td>
-                    </tr>
-                    <tr>
-                        <td class="center">목회비</td>
-                        <td class="number">0</td>
-                        <td class="number">3,600,000</td>
-                        <td class="number">3,600,000</td>
-                        <td class="number">3,600,000</td>
-                    </tr>
-                    <tr>
-                        <td class="center">목회자사례비</td>
-                        <td class="number">0</td>
-                        <td class="number">3,600,000</td>
-                        <td class="number">0</td>
-                        <td class="number">12,000,000</td>
-                    </tr>
-                     <tr>
-                        <td class="center">예비비</td>
-                        <td class="number">0</td>
-                        <td class="number">1,000,000</td>
-                        <td class="number">0</td>
-                        <td class="number">1,000,000</td>
-                    </tr>
-                </tbody>
-                <tfoot>
-                    <tr>
-                        <td class="center">합 계</td>
-                        <td class="number">7,435,378</td>
-                        <td class="number">9,923,818</td>
-                        <td class="number">16,410,318</td>
-                        <td class="number">31,700,000</td>
-                    </tr>
-                </tfoot>
-            </table>
+        <div class="keep-together print-page-break">
+            <h3>2. 일반재정 지출</h3>
+            <div class="table-responsive">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>항목</th>
+                            <th>2024년 결산</th>
+                            <th>2025년 예산</th>
+                            <th>2025년 결산</th>
+                            <th>2026년 예산</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="center">퇴직적립금(후원금)</td>
+                            <td class="number">6,000,000</td>
+                            <td class="number">6,000,000</td>
+                            <td class="number">6,000,000</td>
+                            <td class="number">6,000,000</td>
+                        </tr>
+                        <tr>
+                            <td class="center">교제비(식대/간식)</td>
+                            <td class="number">4,608,869</td>
+                            <td class="number">3,389,868</td>
+                            <td class="number">3,770,368</td>
+                            <td class="number">5,000,000</td>
+                        </tr>
+                        <tr>
+                            <td class="center">서무비</td>
+                            <td class="number">4,400</td>
+                            <td class="number">100,000</td>
+                            <td class="number">30,300</td>
+                            <td class="number">100,000</td>
+                        </tr>
+                        <tr>
+                            <td class="center">교육비</td>
+                            <td class="number">114,600</td>
+                            <td class="number">500,000</td>
+                            <td class="number">9,500</td>
+                            <td class="number">500,000</td>
+                        </tr>
+                        <tr>
+                            <td class="center">행사비</td>
+                            <td class="number">111,800</td>
+                            <td class="number">500,000</td>
+                            <td class="number">121,800</td>
+                            <td class="number">500,000</td>
+                        </tr>
+                        <tr>
+                            <td class="center">비품비</td>
+                            <td class="number">672,709</td>
+                            <td class="number">500,000</td>
+                            <td class="number">755,350</td>
+                            <td class="number">500,000</td>
+                        </tr>
+                        <tr>
+                            <td class="center">경조비</td>
+                            <td class="number">1,060,000</td>
+                            <td class="number">1,000,000</td>
+                            <td class="number">1,460,000</td>
+                            <td class="number">1,500,000</td>
+                        </tr>
+                        <tr>
+                            <td class="center">강사비</td>
+                            <td class="number">200,000</td>
+                            <td class="number">500,000</td>
+                            <td class="number">200,000</td>
+                            <td class="number">500,000</td>
+                        </tr>
+                        <tr>
+                            <td class="center">상회비(지방회/총회)</td>
+                            <td class="number">519,000</td>
+                            <td class="number">500,000</td>
+                            <td class="number">463,000</td>
+                            <td class="number">1,000,000</td>
+                        </tr>
+                        <tr>
+                            <td class="center">접대비</td>
+                            <td class="number">60,000</td>
+                            <td class="number">1,000,000</td>
+                            <td class="number">0</td>
+                            <td class="number">500,000</td>
+                        </tr>
+                        <tr>
+                            <td class="center">심방비</td>
+                            <td class="number">84,000</td>
+                            <td class="number">0</td>
+                            <td class="number">0</td>
+                            <td class="number">0</td>
+                        </tr>
+                        <tr>
+                            <td class="center">목회비</td>
+                            <td class="number">0</td>
+                            <td class="number">3,600,000</td>
+                            <td class="number">3,600,000</td>
+                            <td class="number">3,600,000</td>
+                        </tr>
+                        <tr>
+                            <td class="center">목회자사례비</td>
+                            <td class="number">0</td>
+                            <td class="number">3,600,000</td>
+                            <td class="number">0</td>
+                            <td class="number">12,000,000</td>
+                        </tr>
+                         <tr>
+                            <td class="center">예비비</td>
+                            <td class="number">0</td>
+                            <td class="number">1,000,000</td>
+                            <td class="number">0</td>
+                            <td class="number">1,000,000</td>
+                        </tr>
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <td class="center">합 계</td>
+                            <td class="number">7,435,378</td>
+                            <td class="number">9,923,818</td>
+                            <td class="number">16,410,318</td>
+                            <td class="number">31,700,000</td>
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>
         </div>
 
-        <h3>3. 특별재정 보고</h3>
-        <div class="table-responsive">
-            <table>
-                <thead>
-                    <tr>
-                        <th colspan="3">수입</th>
-                        <th colspan="3">지출</th>
-                    </tr>
-                    <tr>
-                        <th>구분</th>
-                        <th>2024년</th>
-                        <th>2025년</th>
-                        <th>항목</th>
-                        <th>2025년</th>
-                        <th>2026년 예산</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td class="center">씨앗전기이월금</td>
-                        <td class="number">10,019,502</td>
-                        <td class="number">8,918,423</td>
-                        <td class="center">라온트리 지원(월세/관리)</td>
-                        <td class="number">14,400,000</td>
-                        <td class="number">14,400,000</td>
-                    </tr>
-                    <tr>
-                        <td class="center">선교헌금</td>
-                        <td class="number">-</td>
-                        <td class="number">0</td>
-                        <td class="center">후원(교역자회/명절/공존)</td>
-                        <td class="number">1,400,000</td>
-                        <td class="number">1,000,000</td>
-                    </tr>
-                    <tr>
-                        <td class="center">씨앗헌금</td>
-                        <td class="number">29,844,000</td>
-                        <td class="number">28,672,000</td>
-                        <td class="center">선교사후원</td>
-                        <td class="number">350,000</td>
-                        <td class="number">0</td>
-                    </tr>
-                    <tr>
-                        <td class="center">목적헌금</td>
-                        <td class="number">240,000</td>
-                        <td class="number">0</td>
-                        <td class="center">선교비(7가정+α)</td>
-                        <td class="number">8,442,400</td>
-                        <td class="number">8,400,000</td>
-                    </tr>
-                    <tr>
-                        <td class="center">일반재정 이관</td>
-                        <td class="number">1,799,424</td>
-                        <td class="number">-646,899</td>
-                        <td class="center">선교회/성경학교/수련회</td>
-                        <td class="number">300,000</td>
-                        <td class="number">500,000</td>
-                    </tr>
-                     <tr>
-                        <td class="center" rowspan="8"></td>
-                        <td class="number" rowspan="8"></td>
-                        <td class="number" rowspan="8"></td>
-                        <td class="center">출산/병원비/축하</td>
-                        <td class="number">500,000</td>
-                        <td class="number">1,000,000</td>
-                    </tr>
-                    <tr>
-                        <td class="center">선교사/목회자 식사대접</td>
-                        <td class="number">1,257,000</td>
-                        <td class="number">1,000,000</td>
-                    </tr>
-                    <tr>
-                        <td class="center">교회운영/인건비 지원</td>
-                        <td class="number">0</td>
-                        <td class="number">6,000,000</td>
-                    </tr>
-                     <tr>
-                        <td class="center">지역봉사/지방회지원</td>
-                        <td class="number">600,000</td>
-                        <td class="number">1,000,000</td>
-                    </tr>
-                    <tr>
-                        <td class="center">신학생 장학지원</td>
-                        <td class="number">1,000,000</td>
-                        <td class="number">0</td>
-                    </tr>
-                    <tr>
-                        <td class="center">교역자회비/단기선교(방글라데시)</td>
-                        <td class="number">120,000</td>
-                        <td class="number">1,120,000</td>
-                    </tr>
-                    <tr>
-                        <td class="center">라온트리사역</td>
-                        <td class="number">1,300,000</td>
-                        <td class="number">1,000,000</td>
-                    </tr>
-                    <tr>
-                        <td class="center">예비비</td>
-                        <td class="number">-</td>
-                        <td class="number">2,000,000</td>
-                    </tr>
-                </tbody>
-                <tfoot>
-                    <tr>
-                        <td class="center">합 계</td>
-                        <td class="number">41,902,926</td>
-                        <td class="number">36,943,524</td>
-                        <td class="center">지출 합계</td>
-                        <td class="number">29,649,400</td>
-                        <td class="number">37,420,000</td>
-                    </tr>
-                </tfoot>
-            </table>
-            <p style="font-size: 0.85em; color: #666; margin-top: 5px;">* 병원-최동호, 장학금-박정탁</p>
+        <div class="keep-together print-page-break">
+            <h3>3. 특별재정 보고</h3>
+            <div class="table-responsive">
+                <table>
+                    <thead>
+                        <tr>
+                            <th colspan="3">수입</th>
+                            <th colspan="3">지출</th>
+                        </tr>
+                        <tr>
+                            <th>구분</th>
+                            <th>2024년</th>
+                            <th>2025년</th>
+                            <th>항목</th>
+                            <th>2025년</th>
+                            <th>2026년 예산</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="center">씨앗전기이월금</td>
+                            <td class="number">10,019,502</td>
+                            <td class="number">8,918,423</td>
+                            <td class="center">라온트리 지원(월세/관리)</td>
+                            <td class="number">14,400,000</td>
+                            <td class="number">14,400,000</td>
+                        </tr>
+                        <tr>
+                            <td class="center">선교헌금</td>
+                            <td class="number">-</td>
+                            <td class="number">0</td>
+                            <td class="center">후원(교역자회/명절/공존)</td>
+                            <td class="number">1,400,000</td>
+                            <td class="number">1,000,000</td>
+                        </tr>
+                        <tr>
+                            <td class="center">씨앗헌금</td>
+                            <td class="number">29,844,000</td>
+                            <td class="number">28,672,000</td>
+                            <td class="center">선교사후원</td>
+                            <td class="number">350,000</td>
+                            <td class="number">0</td>
+                        </tr>
+                        <tr>
+                            <td class="center">목적헌금</td>
+                            <td class="number">240,000</td>
+                            <td class="number">0</td>
+                            <td class="center">선교비(7가정+α)</td>
+                            <td class="number">8,442,400</td>
+                            <td class="number">8,400,000</td>
+                        </tr>
+                        <tr>
+                            <td class="center">일반재정 이관</td>
+                            <td class="number">1,799,424</td>
+                            <td class="number">-646,899</td>
+                            <td class="center">선교회/성경학교/수련회</td>
+                            <td class="number">300,000</td>
+                            <td class="number">500,000</td>
+                        </tr>
+                         <tr>
+                            <td class="center" rowspan="8"></td>
+                            <td class="number" rowspan="8"></td>
+                            <td class="number" rowspan="8"></td>
+                            <td class="center">출산/병원비/축하</td>
+                            <td class="number">500,000</td>
+                            <td class="number">1,000,000</td>
+                        </tr>
+                        <tr>
+                            <td class="center">선교사/목회자 식사대접</td>
+                            <td class="number">1,257,000</td>
+                            <td class="number">1,000,000</td>
+                        </tr>
+                        <tr>
+                            <td class="center">교회운영/인건비 지원</td>
+                            <td class="number">0</td>
+                            <td class="number">6,000,000</td>
+                        </tr>
+                         <tr>
+                            <td class="center">지역봉사/지방회지원</td>
+                            <td class="number">600,000</td>
+                            <td class="number">1,000,000</td>
+                        </tr>
+                        <tr>
+                            <td class="center">신학생 장학지원</td>
+                            <td class="number">1,000,000</td>
+                            <td class="number">0</td>
+                        </tr>
+                        <tr>
+                            <td class="center">교역자회비/단기선교(방글라데시)</td>
+                            <td class="number">120,000</td>
+                            <td class="number">1,120,000</td>
+                        </tr>
+                        <tr>
+                            <td class="center">라온트리사역</td>
+                            <td class="number">1,300,000</td>
+                            <td class="number">1,000,000</td>
+                        </tr>
+                        <tr>
+                            <td class="center">예비비</td>
+                            <td class="number">-</td>
+                            <td class="number">2,000,000</td>
+                        </tr>
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <td class="center">합 계</td>
+                            <td class="number">41,902,926</td>
+                            <td class="number">36,943,524</td>
+                            <td class="center">지출 합계</td>
+                            <td class="number">29,649,400</td>
+                            <td class="number">37,420,000</td>
+                        </tr>
+                    </tfoot>
+                </table>
+                <p style="font-size: 0.85em; color: #666; margin-top: 5px;">* 병원-최동호, 장학금-박정탁</p>
+            </div>
         </div>
     </section>
 
     <!-- 6. 2026년 계획 -->
-    <section id="plan-2026">
+    <section id="plan-2026" class="keep-together">
         <h2>Ⅵ. 2026년도 교회 계획</h2>
         
         <h3>1. 인사 계획</h3>
@@ -872,7 +908,7 @@
     </section>
 
     <!-- 기타 -->
-    <section>
+    <section class="keep-together">
         <h2>Ⅶ. 기타 안건 및 토의</h2>
         <div class="memo-area" contenteditable="true"></div>
     </section>
@@ -951,7 +987,7 @@
         document.body.classList.add('printing-mode');
 
         const opt = {
-            margin:       [10, 10, 10, 10], // Top, Left, Bottom, Right
+            margin:       [15, 10, 10, 10], // Increased Top Margin to 15mm
             filename:     '2025_라온동행교회_사무총회록.pdf',
             image:        { type: 'jpeg', quality: 0.98 },
             html2canvas:  { 
