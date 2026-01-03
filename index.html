@@ -10,6 +10,8 @@
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&family=Noto+Serif+KR:wght@400;600;700&display=swap" rel="stylesheet">
     <!-- Chart.js for Graphs -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- html2pdf.js for PDF Generation -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
     
     <style>
         :root {
@@ -45,6 +47,7 @@
             max-width: 900px;
             margin: 0 auto;
             padding: 40px 20px;
+            background-color: var(--bg-color); /* Ensure background for PDF */
         }
 
         /* Header Section */
@@ -148,10 +151,7 @@
             border-radius: 12px;
             box-shadow: var(--shadow);
             transition: transform 0.2s ease;
-        }
-
-        section:hover {
-            transform: translateY(-2px);
+            page-break-inside: avoid; /* Avoid breaking sections in PDF */
         }
 
         section h2 {
@@ -237,6 +237,29 @@
             min-width: 300px;
         }
 
+        /* Editable Memo Area */
+        .memo-area {
+            min-height: 150px;
+            border: 2px dashed #d7ccc8;
+            border-radius: 8px;
+            padding: 20px;
+            color: #3e2723;
+            background-color: #fafafa;
+            outline: none;
+            transition: all 0.3s ease;
+        }
+
+        .memo-area:focus {
+            background-color: #fff;
+            border-color: var(--secondary-color);
+            box-shadow: 0 0 5px rgba(141, 110, 99, 0.2);
+        }
+
+        .memo-area[contenteditable]:empty::before {
+            content: "이곳을 클릭하여 기타 안건이나 토의 사항을 자유롭게 기록하세요.";
+            color: #aaa;
+        }
+
         /* Footer */
         footer {
             text-align: center;
@@ -246,13 +269,36 @@
             border-top: 1px solid var(--accent-color);
         }
 
+        /* Buttons (No Print) */
+        .btn-download {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 30px;
+            font-family: 'Noto Sans KR', sans-serif;
+            font-weight: bold;
+            cursor: pointer;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+            z-index: 1000;
+            transition: background-color 0.3s ease;
+        }
+        
+        .btn-download:hover {
+            background-color: #3e2723;
+        }
+
         /* Print Specifics */
         @media print {
             body { background: white; color: black; }
-            .container { max-width: 100%; padding: 0; }
-            section { box-shadow: none; border: 1px solid #ccc; page-break-inside: avoid; }
-            .no-print { display: none; }
+            .container { max-width: 100%; padding: 0; margin: 0; }
+            section { box-shadow: none; border: 1px solid #ccc; page-break-inside: avoid; margin-bottom: 20px; }
+            .no-print, .btn-download { display: none !important; }
             .toc { display: none; }
+            .memo-area { border: 1px solid #ccc; }
         }
 
         /* Responsive */
@@ -260,12 +306,18 @@
             header h1 { font-size: 1.8rem; }
             section { padding: 25px; }
             .scripture-box { max-width: 100%; }
+            .btn-download { bottom: 20px; top: auto; right: 20px; } /* Floating bottom on mobile */
         }
     </style>
 </head>
 <body>
 
-<div class="container">
+<!-- Download Button -->
+<button class="btn-download no-print" onclick="downloadPDF()" data-html2canvas-ignore="true">
+    📄 PDF 다운로드
+</button>
+
+<div class="container" id="pdf-content">
     
     <header>
         <h1>2025년 라온동행교회 사무총회록</h1>
@@ -784,9 +836,7 @@
     <!-- 기타 -->
     <section>
         <h2>Ⅶ. 기타 안건 및 토의</h2>
-        <div style="height: 150px; border: 2px dashed #d7ccc8; border-radius: 8px; display: flex; align-items: center; justify-content: center; color: #aaa;">
-            메모 및 자유 토의 공간
-        </div>
+        <div class="memo-area" contenteditable="true"></div>
     </section>
 
     <footer>
@@ -852,6 +902,21 @@
             }
         }
     });
+
+    // PDF Download Function
+    function downloadPDF() {
+        const element = document.getElementById('pdf-content');
+        const opt = {
+            margin:       10,
+            filename:     '2025_라온동행교회_사무총회록.pdf',
+            image:        { type: 'jpeg', quality: 0.98 },
+            html2canvas:  { scale: 2 },
+            jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' }
+        };
+
+        // Promise based usage
+        html2pdf().set(opt).from(element).save();
+    }
 </script>
 
 </body>
