@@ -3,466 +3,856 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>라온동행교회 회의록 작성 (v2)</title>
-    <script src="https://cdn.tailwindcss.com"></script>
+    <title>2025년 라온동행교회 사무총회록</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&family=Noto+Serif+KR:wght@400;600;700&display=swap" rel="stylesheet">
+    <!-- Chart.js for Graphs -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;700&family=Noto+Serif+KR:wght@400;700&display=swap');
+        :root {
+            --primary-color: #5d4037; /* Coffee Brown */
+            --secondary-color: #8d6e63; /* Light Brown */
+            --accent-color: #d7ccc8; /* Beige */
+            --bg-color: #fcfbf9; /* Warm White */
+            --text-color: #3e2723; /* Dark Brown Text */
+            --white: #ffffff;
+            --shadow: 0 4px 20px rgba(93, 64, 55, 0.1);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
 
         body {
             font-family: 'Noto Sans KR', sans-serif;
-            background-color: #f3f4f6;
-            /* 스마트폰 하단 여백 확보 */
-            padding-bottom: 100px;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            line-height: 1.7;
+            font-size: 16px;
         }
 
-        .paper-view {
+        h1, h2, h3, h4 {
             font-family: 'Noto Serif KR', serif;
-            line-height: 1.8;
+            color: var(--primary-color);
         }
 
-        /* 인쇄 시 스타일 설정 */
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        /* Header Section */
+        header {
+            text-align: center;
+            padding: 60px 0;
+            margin-bottom: 40px;
+            border-bottom: 1px solid var(--accent-color);
+            position: relative;
+        }
+
+        header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 15px;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+        }
+
+        .header-meta {
+            font-size: 1.1rem;
+            color: var(--secondary-color);
+            margin-bottom: 30px;
+        }
+
+        .scripture-box {
+            background-color: var(--white);
+            border: 1px solid var(--accent-color);
+            padding: 30px;
+            border-radius: 8px;
+            display: inline-block;
+            box-shadow: var(--shadow);
+            max-width: 80%;
+            margin: 0 auto;
+        }
+
+        .scripture-text {
+            font-family: 'Noto Serif KR', serif;
+            font-size: 1.2rem;
+            font-style: italic;
+            margin-bottom: 10px;
+            word-break: keep-all;
+        }
+
+        .scripture-ref {
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: var(--secondary-color);
+        }
+
+        /* Navigation / TOC */
+        .toc {
+            background: var(--white);
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: var(--shadow);
+            margin-bottom: 50px;
+        }
+
+        .toc h2 {
+            font-size: 1.5rem;
+            text-align: center;
+            margin-bottom: 20px;
+            border-bottom: 2px solid var(--accent-color);
+            padding-bottom: 10px;
+            display: inline-block;
+            min-width: 200px;
+            position: relative;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        .toc ul {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 15px;
+            list-style: none;
+        }
+
+        .toc a {
+            text-decoration: none;
+            color: var(--primary-color);
+            font-weight: 500;
+            padding: 8px 16px;
+            border: 1px solid var(--accent-color);
+            border-radius: 20px;
+            transition: all 0.3s ease;
+        }
+
+        .toc a:hover {
+            background-color: var(--primary-color);
+            color: var(--white);
+            border-color: var(--primary-color);
+        }
+
+        /* Content Sections */
+        section {
+            background: var(--white);
+            padding: 40px;
+            margin-bottom: 40px;
+            border-radius: 12px;
+            box-shadow: var(--shadow);
+            transition: transform 0.2s ease;
+        }
+
+        section:hover {
+            transform: translateY(-2px);
+        }
+
+        section h2 {
+            font-size: 1.8rem;
+            margin-bottom: 25px;
+            padding-left: 15px;
+            border-left: 5px solid var(--secondary-color);
+        }
+
+        section h3 {
+            font-size: 1.3rem;
+            margin: 30px 0 15px 0;
+            color: var(--secondary-color);
+            border-bottom: 1px dashed var(--accent-color);
+            padding-bottom: 5px;
+        }
+
+        /* Lists */
+        ol, ul {
+            padding-left: 20px;
+        }
+
+        li {
+            margin-bottom: 8px;
+        }
+
+        /* Tables */
+        .table-responsive {
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+            font-size: 0.95rem;
+            min-width: 600px; /* Ensure tables don't get too squashed on mobile */
+        }
+
+        th, td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid var(--accent-color);
+        }
+
+        th {
+            background-color: #f5f5f5;
+            color: var(--primary-color);
+            font-weight: 600;
+            text-align: center;
+            white-space: nowrap;
+        }
+
+        td.center { text-align: center; }
+        td.right { text-align: right; }
+        td.number { font-family: 'Courier New', monospace; font-weight: bold; text-align: right; }
+
+        tr:hover {
+            background-color: #fafafa;
+        }
+        
+        tfoot tr {
+            background-color: #eceff1;
+            font-weight: bold;
+        }
+
+        /* Charts */
+        .chart-container {
+            position: relative;
+            height: 300px;
+            width: 100%;
+            margin: 20px auto 40px auto;
+        }
+        
+        .chart-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+        
+        .chart-col {
+            flex: 1;
+            min-width: 300px;
+        }
+
+        /* Footer */
+        footer {
+            text-align: center;
+            padding: 40px 0;
+            color: #888;
+            font-size: 0.9rem;
+            border-top: 1px solid var(--accent-color);
+        }
+
+        /* Print Specifics */
         @media print {
-            body * {
-                visibility: hidden;
-            }
-            #printable-area, #printable-area * {
-                visibility: visible;
-            }
-            #printable-area {
-                position: absolute;
-                left: 0;
-                top: 0;
-                width: 100%;
-                padding: 0;
-                margin: 0;
-                background: white;
-                color: black;
-            }
-            .no-print {
-                display: none !important;
-            }
-            @page {
-                size: A4;
-                margin: 20mm;
-            }
+            body { background: white; color: black; }
+            .container { max-width: 100%; padding: 0; }
+            section { box-shadow: none; border: 1px solid #ccc; page-break-inside: avoid; }
+            .no-print { display: none; }
+            .toc { display: none; }
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            header h1 { font-size: 1.8rem; }
+            section { padding: 25px; }
+            .scripture-box { max-width: 100%; }
         }
     </style>
 </head>
 <body>
 
-    <div class="max-w-3xl mx-auto p-4 md:p-8">
+<div class="container">
+    
+    <header>
+        <h1>2025년 라온동행교회 사무총회록</h1>
+        <div class="header-meta">
+            <span>2026년 1월 4일(주일)</span> &nbsp;|&nbsp; <span>라온동행교회(라온트리)</span>
+        </div>
+        <div class="scripture-box">
+            <p class="scripture-text">“너희는 너희가 하나님의 성전인 것과 하나님의 성령이 너희 안에 계시는 것을 알지 못하느냐”</p>
+            <p class="scripture-ref">(고린도전서 3:16)</p>
+        </div>
+    </header>
+
+    <nav class="toc">
+        <h2>CONTENTS</h2>
+        <ul>
+            <li><a href="#worship">개회예배</a></li>
+            <li><a href="#meeting">본회의</a></li>
+            <li><a href="#members">회원명단</a></li>
+            <li><a href="#report-2025">2025 보고</a></li>
+            <li><a href="#finance">재정결산</a></li>
+            <li><a href="#plan-2026">2026 계획</a></li>
+        </ul>
+    </nav>
+
+    <!-- 1. 개회예배 -->
+    <section id="worship">
+        <h2>Ⅰ. 개회예배 <small style="font-size:0.6em; color:#888;">(인도: 이광복)</small></h2>
+        <ol>
+            <li><strong>찬 송:</strong> 우리에겐 소원이 하나 있네 (다같이)</li>
+            <li><strong>기 도:</strong> 회원 중</li>
+            <li><strong>성경봉독:</strong> 고린도전서 3장 16절 (이광복)</li>
+            <li><strong>말 씀:</strong> 우리가 교회입니다. (이광복)</li>
+        </ol>
+    </section>
+
+    <!-- 2. 본회의 -->
+    <section id="meeting">
+        <h2>Ⅱ. 본회의 <small style="font-size:0.6em; color:#888;">(의장: 이광복)</small></h2>
+        <ol>
+            <li><strong>서기선정:</strong> 헌법 제6장 46조 ①항 의거 의장 지명 (의장)</li>
+            <li><strong>회원점명:</strong> 서기</li>
+            <li><strong>개회선언:</strong> 헌법 제6장 46조 ②항 의거 과반수 (의장)</li>
+            <li><strong>회순통과:</strong> 다같이</li>
+            <li><strong>2025년도 보고:</strong> 이광복 (인사/교세/목회/경조사/행사/재정결산)</li>
+            <li><strong>2026년도 계획:</strong> 이광복 (인사/행사/재정/예산안)</li>
+            <li><strong>기타토의:</strong> 다같이</li>
+            <li><strong>회의록낭독:</strong> 서기</li>
+            <li><strong>폐회기도:</strong> 의장</li>
+        </ol>
+    </section>
+
+    <!-- 3. 회원명단 -->
+    <section id="members">
+        <h2>Ⅲ. 회원명단 <small style="font-size:0.6em; color:#888;">(2025년 12월 말 기준)</small></h2>
         
-        <!-- 입력 폼 섹션 -->
-        <div id="input-section" class="bg-white rounded-xl shadow-lg p-6 mb-8">
-            <!-- 안내 메시지 -->
-            <div id="kakao-alert" class="hidden bg-yellow-100 border-l-4 border-yellow-500 text-yellow-700 p-4 mb-4" role="alert">
-                <p class="font-bold">주의!</p>
-                <p>카카오톡 앱에서는 저장이 안 될 수 있습니다.<br>우측 하단(또는 상단) 점 3개를 눌러 <strong>'다른 브라우저로 열기'</strong>를 권장합니다.</p>
-            </div>
-
-            <h1 class="text-2xl font-bold text-gray-800 mb-6 border-b pb-2">📝 라온동행교회 회의록 작성</h1>
-            
-            <!-- 상단 바로가기 버튼 (스마트폰용) -->
-            <button type="button" onclick="triggerSubmit()" class="md:hidden w-full mb-6 bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-4 rounded-lg shadow">
-                ▼ 다 썼으면 여기를 눌러서 변환하기
-            </button>
-            
-            <!-- 폼 시작 (onsubmit으로 엔터키 처리 통합) -->
-            <form id="minutesForm" class="space-y-6">
-                
-                <!-- 기본 정보 -->
-                <div class="bg-blue-50 p-4 rounded-lg space-y-4">
-                    <h3 class="font-bold text-blue-800">1. 기본 정보</h3>
-                    <div class="grid grid-cols-2 gap-4">
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700">회의 회차</label>
-                            <input type="number" id="sessionNum" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm border p-2 bg-white" value="6">
-                        </div>
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700">개회 일자</label>
-                            <input type="date" id="date" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm border p-2 bg-white">
-                        </div>
-                    </div>
-                </div>
-
-                <!-- 1부 예배 -->
-                <div class="bg-gray-50 p-4 rounded-lg space-y-4">
-                    <h3 class="font-bold text-gray-800">I. 예배</h3>
-                    <div class="grid grid-cols-2 gap-4">
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700">시작 시간</label>
-                            <input type="time" id="worshipTime" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm border p-2 bg-white">
-                        </div>
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700">기도자</label>
-                            <input type="text" id="prayerName" placeholder="예: 지하연" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm border p-2 bg-white">
-                        </div>
-                    </div>
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700">설교 제목</label>
-                        <input type="text" id="sermonTitle" value="우리가 교회입니다" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm border p-2 bg-white">
-                    </div>
-                </div>
-
-                <!-- 2부 회의 -->
-                <div class="bg-gray-50 p-4 rounded-lg space-y-4">
-                    <h3 class="font-bold text-gray-800">II. 회의 안건</h3>
-                    
-                    <!-- 서기 선임 -->
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700">1. 서기 선임 (지명된 사람)</label>
-                        <input type="text" id="appointedClerk" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm border p-2 bg-white" placeholder="이름 입력">
-                    </div>
-
-                    <!-- 회원 점명 -->
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-2">2. 회원 점명 (숫자 입력)</label>
-                        <div class="grid grid-cols-3 gap-2">
-                            <input type="number" id="countPresent" placeholder="출석" class="rounded-md border p-2 w-full bg-white">
-                            <input type="number" id="countProxy" placeholder="위임" class="rounded-md border p-2 w-full bg-white">
-                            <input type="number" id="countAbsent" placeholder="결석" class="rounded-md border p-2 w-full bg-white">
-                        </div>
-                    </div>
-
-                    <!-- 동의/재청 입력 도우미 -->
-                    <div class="border-t pt-4">
-                        <p class="text-xs text-gray-500 mb-2">* 각 안건별 동의/재청자 입력</p>
-                        
-                        <div class="space-y-3">
-                            <div>
-                                <label class="block text-sm font-medium text-gray-700">4. 회순통과</label>
-                                <div class="flex gap-2">
-                                    <input type="text" id="agendaProposer" placeholder="동의자" class="w-1/2 rounded-md border p-2 bg-white">
-                                    <input type="text" id="agendaSeconder" placeholder="재청자" class="w-1/2 rounded-md border p-2 bg-white">
-                                </div>
-                            </div>
-                            
-                            <div>
-                                <label class="block text-sm font-medium text-gray-700">5. 각종보고 (감사/회계)</label>
-                                <div class="flex gap-2">
-                                    <input type="text" id="reportProposer" placeholder="동의자" class="w-1/2 rounded-md border p-2 bg-white">
-                                    <input type="text" id="reportSeconder" placeholder="재청자" class="w-1/2 rounded-md border p-2 bg-white">
-                                </div>
-                            </div>
-
-                            <div>
-                                <label class="block text-sm font-medium text-gray-700">6. 결산보고</label>
-                                <div class="flex gap-2">
-                                    <input type="text" id="closingProposer" placeholder="동의자" class="w-1/2 rounded-md border p-2 bg-white">
-                                    <input type="text" id="closingSeconder" placeholder="재청자" class="w-1/2 rounded-md border p-2 bg-white">
-                                </div>
-                            </div>
-
-                            <div>
-                                <label class="block text-sm font-medium text-gray-700">8. 예산안 심의</label>
-                                <div class="flex gap-2">
-                                    <input type="text" id="budgetProposer" placeholder="동의자" class="w-1/2 rounded-md border p-2 bg-white">
-                                    <input type="text" id="budgetSeconder" placeholder="재청자" class="w-1/2 rounded-md border p-2 bg-white">
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- 기타 안건 -->
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700">9. 기타 안건 및 토의 (없으면 공란)</label>
-                        <textarea id="otherBiz" rows="3" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm border p-2 bg-white" placeholder="- 주일 식사 당번 건: 매월 첫주로 변경 (동의: 홍길동, 재청: 김철수)"></textarea>
-                    </div>
-
-                    <!-- 폐회 -->
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700">11. 폐회 동의/재청</label>
-                        <div class="flex gap-2 mb-2">
-                            <input type="text" id="closeProposer" placeholder="동의자" class="w-1/2 rounded-md border p-2 bg-white">
-                            <input type="text" id="closeSeconder" placeholder="재청자" class="w-1/2 rounded-md border p-2 bg-white">
-                        </div>
-                        <label class="block text-sm font-medium text-gray-700">폐회 시간</label>
-                        <input type="time" id="closeTime" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm border p-2 bg-white">
-                    </div>
-                </div>
-
-                <!-- 하단 버튼 (Submit 타입으로 변경하여 키보드 호환성 증대) -->
-                <button type="submit" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-4 px-4 rounded-lg shadow-lg text-lg transition duration-200">
-                    회의록 미리보기 & PDF 저장 화면으로
-                </button>
-
-            </form>
+        <!-- Member Chart -->
+        <div class="chart-container" style="max-width: 500px;">
+            <canvas id="memberChart"></canvas>
         </div>
 
-        <!-- 미리보기/인쇄 영역 -->
-        <div id="preview-section" class="hidden bg-white shadow-2xl p-8 md:p-12 min-h-screen">
-            <div id="printable-area" class="paper-view max-w-[210mm] mx-auto text-black">
-                
-                <!-- 문서 제목 -->
-                <div class="text-center mb-8">
-                    <h1 class="text-2xl font-bold border-b-2 border-black inline-block pb-1">제<span id="p-sessionNum"></span>회 라온동행교회 사무총회 회의록</h1>
-                </div>
-
-                <!-- I. 예배 -->
-                <div class="mb-6">
-                    <h2 class="text-lg font-bold mb-2">I. 예 배</h2>
-                    <p class="pl-4 text-justify">
-                        주후 <span id="p-dateYear"></span>년 <span id="p-dateMonth"></span>월 <span id="p-dateDay"></span>일 
-                        오후 <span id="p-worshipTime"></span> 라온트리에서 이광복 목사의 인도로 찬양 "우리에겐 소원이 하나 있네"를 부르고 
-                        <span class="font-bold" id="p-prayerName"></span> 씨가 기도한 후, 
-                        성경 고린도전서 3장 16절을 봉독하고 "<span id="p-sermonTitle"></span>"라는 제목으로 이광복 목사가 설교하다.
-                    </p>
-                </div>
-
-                <!-- II. 회의 -->
-                <div class="mb-6">
-                    <h2 class="text-lg font-bold mb-2">II. 회 의</h2>
-                    
-                    <div class="space-y-4 pl-4">
-                        <div>
-                            <h3 class="font-bold">1. 서기 선임</h3>
-                            <p>의장 이광복 씨가 <span class="font-bold" id="p-appointedClerk"></span> 씨를 서기로 지명하다.</p>
-                        </div>
-
-                        <div>
-                            <h3 class="font-bold">2. 회원 점명</h3>
-                            <p>서기 <span id="p-clerkNameRef"></span> 씨가 회원을 점명하니 재적 18명 중 
-                            출석 <span id="p-countPresent"></span>명, 위임 <span id="p-countProxy"></span>명, 
-                            결석 <span id="p-countAbsent"></span>명임을 보고하다.</p>
-                        </div>
-
-                        <div>
-                            <h3 class="font-bold">3. 개회 선언</h3>
-                            <p>성원이 되므로 의장이 교단 헌법 제46조 2항에 의거 제<span id="p-sessionNum2"></span>회 라온동행교회 사무총회가 개회됨을 선언하다.</p>
-                        </div>
-
-                        <div>
-                            <h3 class="font-bold">4. 회순 통과</h3>
-                            <p>제출된 회순을 따라 진행하되 필요를 따라 가감하여 진행하자는 <span id="p-agendaProposer"></span> 씨의 동의에 <span id="p-agendaSeconder"></span> 씨의 재청이 있어 가결되다.</p>
-                        </div>
-
-                        <div>
-                            <h3 class="font-bold">5. 각종 보고</h3>
-                            <p>각종 경과보고는 감사보고와 회계보고는 직접 보고하고 기타보고는 유인물로 받자는 <span id="p-reportProposer"></span> 씨의 동의와 <span id="p-reportSeconder"></span> 씨의 재청으로 가결되다.</p>
-                        </div>
-
-                        <div>
-                            <h3 class="font-bold">6. 결산 보고</h3>
-                            <p>이광복 씨가 재정 결과를 보고하니 <span id="p-closingProposer"></span> 씨의 동의와 <span id="p-closingSeconder"></span> 씨의 재청으로 가결되다.</p>
-                        </div>
-
-                        <div>
-                            <h3 class="font-bold">7. 신년도 계획</h3>
-                            <p>담임목사 이광복 씨가 <span id="p-nextYear"></span>년도 목회계획을 공포하다.</p>
-                        </div>
-
-                        <div>
-                            <h3 class="font-bold">8. <span id="p-nextYear2"></span>년 예산</h3>
-                            <p>이광복 씨가 예산안을 보고하니, <span id="p-budgetProposer"></span> 씨의 동의와 <span id="p-budgetSeconder"></span> 씨의 재청으로 가결되다.</p>
-                        </div>
-
-                        <div>
-                            <h3 class="font-bold">9. 기타 안건 및 토의</h3>
-                            <div id="p-otherBiz" class="whitespace-pre-line"></div>
-                        </div>
-
-                        <div>
-                            <h3 class="font-bold">10. 회의록 낭독</h3>
-                            <p>서기 <span id="p-clerkNameRef2"></span> 씨가 회의록을 낭독하니 잘못된 문안은 수정하여 받자는 <span id="p-agendaProposer"></span> 씨의 동의와 <span id="p-agendaSeconder"></span> 씨의 재청으로 가결되다.</p>
-                        </div>
-
-                        <div>
-                            <h3 class="font-bold">11. 폐회</h3>
-                            <p>회무를 종결하자는 <span id="p-closeProposer"></span> 씨의 동의가 <span id="p-closeSeconder"></span> 씨의 재청으로 가결되어 
-                            의장 이광복 씨가 제<span id="p-sessionNum3"></span>회 라온동행교회 사무총회의 폐회를 선언하고, 축도로 마치니 오후 <span id="p-closeTime"></span>이더라.</p>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- 하단 서명 -->
-                <div class="mt-12 text-right space-y-4 pr-8">
-                    <p>주후 <span id="p-dateFull"></span></p>
-                    <div class="flex justify-end items-center gap-4 mt-8">
-                        <span>의장 이광복</span>
-                        <span class="text-gray-400 text-sm border px-2 py-1 rounded">(인)</span>
-                    </div>
-                    <div class="flex justify-end items-center gap-4">
-                        <span>서기 <span id="p-finalClerk"></span></span>
-                        <span class="text-gray-400 text-sm border px-2 py-1 rounded">(인)</span>
-                    </div>
-                </div>
-            </div>
-
-            <!-- 하단 버튼 영역 (인쇄 시 숨김) -->
-            <div class="mt-8 flex flex-col md:flex-row gap-4 justify-center no-print">
-                <button onclick="editMode()" class="bg-gray-500 hover:bg-gray-600 text-white font-bold py-3 px-6 rounded shadow w-full md:w-auto">
-                    뒤로 가기 (수정)
-                </button>
-                <button onclick="window.print()" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-6 rounded shadow flex items-center justify-center gap-2 w-full md:w-auto">
-                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"></path></svg>
-                    PDF로 저장 / 인쇄
-                </button>
-            </div>
-            <p class="text-center text-gray-500 mt-4 text-sm no-print">
-                * PDF 저장 버튼을 누른 후, 프린터 선택 화면에서 <strong>[PDF로 저장]</strong>을 선택하세요.
-            </p>
+        <h3>1. 정회원 (총 18명)</h3>
+        <div class="table-responsive">
+            <table>
+                <tr>
+                    <th width="20%">구분</th>
+                    <th>명단 (가나다순)</th>
+                    <th width="15%">인원</th>
+                </tr>
+                <tr>
+                    <td class="center"><strong>남자</strong></td>
+                    <td>김준호 박상민 안현진 오상석 오승현 이광복 이광진 이동현 임성호 최동호 황세영</td>
+                    <td class="center">11명</td>
+                </tr>
+                <tr>
+                    <td class="center"><strong>여자</strong></td>
+                    <td>강윤정 박영애 안지선 윤혜영 정미경 지하연 홍윤희</td>
+                    <td class="center">7명</td>
+                </tr>
+            </table>
         </div>
-    </div>
 
-    <script>
-        // DOM 로드 후 실행 보장
-        window.addEventListener('DOMContentLoaded', (event) => {
-            console.log("DOM loaded");
-            
-            // 카카오톡 브라우저 감지
-            const userAgent = navigator.userAgent || "";
-            if (/KAKAOTALK/i.test(userAgent)) {
-                document.getElementById('kakao-alert').classList.remove('hidden');
+        <h3>2. 준회원 및 교회학교 (총 10명)</h3>
+        <div class="table-responsive">
+            <table>
+                <tr>
+                    <th width="20%">구분</th>
+                    <th>명단</th>
+                    <th width="15%">인원</th>
+                </tr>
+                <tr>
+                    <td class="center"><strong>준회원</strong></td>
+                    <td>(남) 김영환 이형주<br>(여) 원유정</td>
+                    <td class="center">3명</td>
+                </tr>
+                <tr>
+                    <td class="center"><strong>교회학교</strong></td>
+                    <td>(남) 이윤준(5) 이윤한(5)<br>(여) 안지율(7) 최아란(13) 이다예(14) 오승하(15) 이주예(16)</td>
+                    <td class="center">7명</td>
+                </tr>
+                <tr style="background-color: #eceff1;">
+                    <td colspan="2" class="center"><strong>총 재적 인원</strong></td>
+                    <td class="center"><strong>28명</strong></td>
+                </tr>
+            </table>
+        </div>
+    </section>
+
+    <!-- 4. 2025년 교회보고 -->
+    <section id="report-2025">
+        <h2>Ⅳ. 2025년도 교회보고</h2>
+
+        <h3>1. 인사 및 교세 보고</h3>
+        <ul>
+            <li><strong>교역자:</strong> 이광복 목사 (1명), 박정탁 전도사(사임)</li>
+            <li><strong>후원선교사 (7가정):</strong> 김병훈/이정아(미얀마), 손현성/이경호(동티모르), 오소원/유수연(중국), 김종한/김윤숙(라오스), 한이삭/변찬은(헝가리), 이정형/김소연(몽골), 전민수/이은영(방글라데시)</li>
+            <li><strong>교회학교:</strong> 유치부(3), 유년부(0), 초등부(1), 중등부(3), 고등부(0) / 합계 7명</li>
+            <li><strong>신급 분포:</strong> 구도인(3), 세례인(18) / 합계 21명 (유아/유소년 세례 3명 포함)</li>
+        </ul>
+
+        <h3>2. 예배 및 예식 보고</h3>
+        <ul>
+            <li><strong>예배:</strong> 주일예배 52회(부활, 맥추, 추수), 성탄축하예배 1회, 송구영신예배 1회</li>
+            <li><strong>예식:</strong> 세례예식 1회(황세영), 성찬예식 3회, 헌아식 0회</li>
+        </ul>
+
+        <h3>3. 경조사 보고</h3>
+        <div style="background: #f8f8f8; padding: 20px; border-radius: 8px;">
+            <h4 style="margin-bottom: 10px; color: var(--secondary-color);">1) 외부 경조사</h4>
+            <ul style="margin-bottom: 20px;">
+                <li><strong>장례식 (3회):</strong> 이명재 목사 모친(실로암), 이상철 목사 부친(부천영광), 이선학 목사 모친(주사랑)</li>
+                <li><strong>결혼식 (2회):</strong> 이명재 목사 자녀(실로암), 전병권 목사 자녀(신현)</li>
+                <li><strong>취임식/개소식:</strong> 심재환 목사(주님사랑의) / 공존</li>
+                <li><strong>임직식:</strong> 실로암, 은강, 한샘, 주사랑, 부천영광</li>
+            </ul>
+            <h4 style="margin-bottom: 10px; color: var(--secondary-color);">2) 내부 경조사</h4>
+            <ul>
+                <li><strong>장례식 (1회):</strong> 안현진 부친</li>
+                <li><strong>졸업식 (1회):</strong> 이다예</li>
+                <li style="color:#888;">기타: 결혼 0회, 돌 0회, 군입대 0회, 임직식 0회</li>
+            </ul>
+        </div>
+
+        <h3>4. 주요 행사 보고</h3>
+        <div class="table-responsive">
+            <table>
+                <tr>
+                    <th width="30%">구분</th>
+                    <th>내용</th>
+                </tr>
+                <tr>
+                    <td class="center"><strong>내부 행사</strong></td>
+                    <td>
+                        컴퓨터 활용 특강/청소년 겨울수련회(1월), 다음세대 주관예배(2/4/10월), 부활절/야외예배(4월), 독서모임(5월), M.T(6월), 맥추감사절(7월), 추수감사절(11월), 성탄/송구영신/AI 활용 교육(12월)<br>
+                        <span style="display:block; margin-top:5px; color:#5d4037; font-size:0.9em;">※ 기타: 생일 축하, 남성/여성/청소년 모임</span>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="center"><strong>외부 행사</strong></td>
+                    <td>
+                        부천지방회/선교적교회 모임(1월), 지방회(2월), 징검다리/커피프로그램(3월), 총동문대회(4월), 군방문/외부설교(6-7월), 교역자회 수련회(10월), AI 활용 세미나(12월)
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </section>
+
+    <!-- 5. 재정결산 -->
+    <section id="finance">
+        <h2>Ⅴ. 재정 결산 및 예산 보고</h2>
+        <p style="text-align: right; font-size: 0.9em; color: #888; margin-bottom: 20px;">(기준일: 2025년 12월 14일 / 단위: 원)</p>
+
+        <!-- Finance Chart -->
+        <div class="chart-row">
+            <div class="chart-col">
+                <canvas id="financeBudgetChart"></canvas>
+            </div>
+            <div class="chart-col">
+                 <!-- Second chart placeholder or remove if not needed. Using column width for responsiveness -->
+            </div>
+        </div>
+        
+        <h3>1. 일반재정 수입</h3>
+        <div class="table-responsive">
+            <table>
+                <thead>
+                    <tr>
+                        <th>항목</th>
+                        <th>2024년 결산</th>
+                        <th>2025년 결산</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="center">감사헌금</td>
+                        <td class="number">8,654,000</td>
+                        <td class="number">10,361,000</td>
+                    </tr>
+                    <tr>
+                        <td class="center">전주태평</td>
+                        <td class="number">2,400,000</td>
+                        <td class="number">2,400,000</td>
+                    </tr>
+                    <tr>
+                        <td class="center">성광</td>
+                        <td class="number">1,200,000</td>
+                        <td class="number">1,200,000</td>
+                    </tr>
+                    <tr>
+                        <td class="center">성천</td>
+                        <td class="number">600,000</td>
+                        <td class="number">600,000</td>
+                    </tr>
+                    <tr>
+                        <td class="center">이선우</td>
+                        <td class="number">600,000</td>
+                        <td class="number">0</td>
+                    </tr>
+                    <tr>
+                        <td class="center">장혜숙</td>
+                        <td class="number">600,000</td>
+                        <td class="number">600,000</td>
+                    </tr>
+                    <tr>
+                        <td class="center">임성현</td>
+                        <td class="number">400,000</td>
+                        <td class="number">600,000</td>
+                    </tr>
+                    <tr>
+                        <td class="center">잡수익/이자</td>
+                        <td class="number">194,000</td>
+                        <td class="number">2,419</td>
+                    </tr>
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <td class="center">합 계</td>
+                        <td class="number">13,435,378</td>
+                        <td class="number">15,763,419</td>
+                    </tr>
+                </tfoot>
+            </table>
+            <p style="font-size: 0.85em; color: #666; margin-top: -10px;">* 참고: 라온트리 보증금 10,000,000원 별도</p>
+        </div>
+
+        <h3>2. 일반재정 지출</h3>
+        <div class="table-responsive">
+            <table>
+                <thead>
+                    <tr>
+                        <th>항목</th>
+                        <th>2024년 결산</th>
+                        <th>2025년 예산</th>
+                        <th>2025년 결산</th>
+                        <th>2026년 예산</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="center">퇴직적립금(후원금)</td>
+                        <td class="number">6,000,000</td>
+                        <td class="number">6,000,000</td>
+                        <td class="number">6,000,000</td>
+                        <td class="number">6,000,000</td>
+                    </tr>
+                    <tr>
+                        <td class="center">교제비(식대/간식)</td>
+                        <td class="number">4,608,869</td>
+                        <td class="number">3,389,868</td>
+                        <td class="number">3,770,368</td>
+                        <td class="number">5,000,000</td>
+                    </tr>
+                    <tr>
+                        <td class="center">서무비</td>
+                        <td class="number">4,400</td>
+                        <td class="number">100,000</td>
+                        <td class="number">30,300</td>
+                        <td class="number">100,000</td>
+                    </tr>
+                    <tr>
+                        <td class="center">교육비</td>
+                        <td class="number">114,600</td>
+                        <td class="number">500,000</td>
+                        <td class="number">9,500</td>
+                        <td class="number">500,000</td>
+                    </tr>
+                    <tr>
+                        <td class="center">행사비</td>
+                        <td class="number">111,800</td>
+                        <td class="number">500,000</td>
+                        <td class="number">121,800</td>
+                        <td class="number">500,000</td>
+                    </tr>
+                    <tr>
+                        <td class="center">비품비</td>
+                        <td class="number">672,709</td>
+                        <td class="number">500,000</td>
+                        <td class="number">755,350</td>
+                        <td class="number">500,000</td>
+                    </tr>
+                    <tr>
+                        <td class="center">경조비</td>
+                        <td class="number">1,060,000</td>
+                        <td class="number">1,000,000</td>
+                        <td class="number">1,460,000</td>
+                        <td class="number">1,500,000</td>
+                    </tr>
+                    <tr>
+                        <td class="center">강사비</td>
+                        <td class="number">200,000</td>
+                        <td class="number">500,000</td>
+                        <td class="number">200,000</td>
+                        <td class="number">500,000</td>
+                    </tr>
+                    <tr>
+                        <td class="center">상회비(지방회/총회)</td>
+                        <td class="number">519,000</td>
+                        <td class="number">500,000</td>
+                        <td class="number">463,000</td>
+                        <td class="number">1,000,000</td>
+                    </tr>
+                    <tr>
+                        <td class="center">접대비</td>
+                        <td class="number">60,000</td>
+                        <td class="number">1,000,000</td>
+                        <td class="number">0</td>
+                        <td class="number">500,000</td>
+                    </tr>
+                    <tr>
+                        <td class="center">심방비</td>
+                        <td class="number">84,000</td>
+                        <td class="number">0</td>
+                        <td class="number">0</td>
+                        <td class="number">0</td>
+                    </tr>
+                    <tr>
+                        <td class="center">목회비</td>
+                        <td class="number">0</td>
+                        <td class="number">3,600,000</td>
+                        <td class="number">3,600,000</td>
+                        <td class="number">3,600,000</td>
+                    </tr>
+                    <tr>
+                        <td class="center">목회자사례비</td>
+                        <td class="number">0</td>
+                        <td class="number">3,600,000</td>
+                        <td class="number">0</td>
+                        <td class="number">12,000,000</td>
+                    </tr>
+                     <tr>
+                        <td class="center">예비비</td>
+                        <td class="number">0</td>
+                        <td class="number">1,000,000</td>
+                        <td class="number">0</td>
+                        <td class="number">1,000,000</td>
+                    </tr>
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <td class="center">합 계</td>
+                        <td class="number">7,435,378</td>
+                        <td class="number">9,923,818</td>
+                        <td class="number">16,410,318</td>
+                        <td class="number">31,700,000</td>
+                    </tr>
+                </tfoot>
+            </table>
+        </div>
+
+        <h3>3. 특별재정 보고</h3>
+        <div class="table-responsive">
+            <table>
+                <thead>
+                    <tr>
+                        <th colspan="3">수입</th>
+                        <th colspan="3">지출</th>
+                    </tr>
+                    <tr>
+                        <th>구분</th>
+                        <th>2024년</th>
+                        <th>2025년</th>
+                        <th>항목</th>
+                        <th>2025년</th>
+                        <th>2026년 예산</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="center">씨앗전기이월금</td>
+                        <td class="number">10,019,502</td>
+                        <td class="number">8,918,423</td>
+                        <td class="center">라온트리 지원(월세/관리)</td>
+                        <td class="number">14,400,000</td>
+                        <td class="number">14,400,000</td>
+                    </tr>
+                    <tr>
+                        <td class="center">선교헌금</td>
+                        <td class="number">-</td>
+                        <td class="number">0</td>
+                        <td class="center">후원(교역자회/명절/공존)</td>
+                        <td class="number">1,400,000</td>
+                        <td class="number">1,000,000</td>
+                    </tr>
+                    <tr>
+                        <td class="center">씨앗헌금</td>
+                        <td class="number">29,844,000</td>
+                        <td class="number">28,672,000</td>
+                        <td class="center">선교사후원</td>
+                        <td class="number">350,000</td>
+                        <td class="number">0</td>
+                    </tr>
+                    <tr>
+                        <td class="center">목적헌금</td>
+                        <td class="number">240,000</td>
+                        <td class="number">0</td>
+                        <td class="center">선교비(7가정+α)</td>
+                        <td class="number">8,442,400</td>
+                        <td class="number">8,400,000</td>
+                    </tr>
+                    <tr>
+                        <td class="center">일반재정 이관</td>
+                        <td class="number">1,799,424</td>
+                        <td class="number">-646,899</td>
+                        <td class="center">선교회/성경학교/수련회</td>
+                        <td class="number">300,000</td>
+                        <td class="number">500,000</td>
+                    </tr>
+                     <tr>
+                        <td class="center" rowspan="8"></td>
+                        <td class="number" rowspan="8"></td>
+                        <td class="number" rowspan="8"></td>
+                        <td class="center">출산/병원비/축하</td>
+                        <td class="number">500,000</td>
+                        <td class="number">1,000,000</td>
+                    </tr>
+                    <tr>
+                        <td class="center">선교사/목회자 식사대접</td>
+                        <td class="number">1,257,000</td>
+                        <td class="number">1,000,000</td>
+                    </tr>
+                    <tr>
+                        <td class="center">교회운영/인건비 지원</td>
+                        <td class="number">0</td>
+                        <td class="number">6,000,000</td>
+                    </tr>
+                     <tr>
+                        <td class="center">지역봉사/지방회지원</td>
+                        <td class="number">600,000</td>
+                        <td class="number">1,000,000</td>
+                    </tr>
+                    <tr>
+                        <td class="center">신학생 장학지원</td>
+                        <td class="number">1,000,000</td>
+                        <td class="number">0</td>
+                    </tr>
+                    <tr>
+                        <td class="center">교역자회비/단기선교(방글라데시)</td>
+                        <td class="number">120,000</td>
+                        <td class="number">1,120,000</td>
+                    </tr>
+                    <tr>
+                        <td class="center">라온트리사역</td>
+                        <td class="number">1,300,000</td>
+                        <td class="number">1,000,000</td>
+                    </tr>
+                    <tr>
+                        <td class="center">예비비</td>
+                        <td class="number">-</td>
+                        <td class="number">2,000,000</td>
+                    </tr>
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <td class="center">합 계</td>
+                        <td class="number">41,902,926</td>
+                        <td class="number">36,943,524</td>
+                        <td class="center">지출 합계</td>
+                        <td class="number">29,649,400</td>
+                        <td class="number">37,420,000</td>
+                    </tr>
+                </tfoot>
+            </table>
+            <p style="font-size: 0.85em; color: #666; margin-top: 5px;">* 병원-최동호, 장학금-박정탁</p>
+        </div>
+    </section>
+
+    <!-- 6. 2026년 계획 -->
+    <section id="plan-2026">
+        <h2>Ⅵ. 2026년도 교회 계획</h2>
+        
+        <h3>1. 인사 계획</h3>
+        <p><strong>교역자:</strong> 이광복 목사 &nbsp;|&nbsp; <strong>후원선교사:</strong> 7가정 (2025년과 동일)</p>
+
+        <h3>2. 주요 행사 계획</h3>
+        <div class="table-responsive">
+            <table>
+                <tr>
+                    <th width="20%">시기</th>
+                    <th>내용</th>
+                </tr>
+                <tr>
+                    <td class="center"><strong>상반기</strong></td>
+                    <td>신년기도회(1월), 연합비전트립/다음세대 예배(2월), <strong>방글라데시 선교-커피배달(3월)</strong>, 부활절/총동문대회(4월), 야외예배(5월), M.T(6월)</td>
+                </tr>
+                <tr>
+                    <td class="center"><strong>하반기</strong></td>
+                    <td>맥추감사절(7월), 다음세대 주관예배(10월), 추수감사절(11월), 성탄/송구영신예배(12월)</td>
+                </tr>
+                <tr>
+                    <td class="center"><strong>상시</strong></td>
+                    <td>카페 라온트리 운영, <strong>카페를 통한 교회 개척 세미나</strong></td>
+                </tr>
+            </table>
+        </div>
+    </section>
+
+    <!-- 기타 -->
+    <section>
+        <h2>Ⅶ. 기타 안건 및 토의</h2>
+        <div style="height: 150px; border: 2px dashed #d7ccc8; border-radius: 8px; display: flex; align-items: center; justify-content: center; color: #aaa;">
+            메모 및 자유 토의 공간
+        </div>
+    </section>
+
+    <footer>
+        <p>&copy; 2025 라온동행교회 All Rights Reserved.</p>
+        <p>경기도 부천시 (라온트리)</p>
+    </footer>
+
+</div>
+
+<script>
+    // Chart.js Configuration
+    
+    // 1. Member Distribution Chart (Doughnut)
+    const ctxMember = document.getElementById('memberChart').getContext('2d');
+    new Chart(ctxMember, {
+        type: 'doughnut',
+        data: {
+            labels: ['정회원(남)', '정회원(여)', '준회원', '교회학교'],
+            datasets: [{
+                data: [11, 7, 3, 7],
+                backgroundColor: [
+                    '#5d4037', // Coffee Brown
+                    '#8d6e63', // Light Brown
+                    '#bcaaa4', // Beige Brown
+                    '#ffcc80'  // Accent Orange/Gold
+                ],
+                borderWidth: 1
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: { position: 'bottom' },
+                title: { display: true, text: '2025년 회원 구성 현황' }
             }
-
-            // 오늘 날짜 및 기본 시간 설정
-            const today = new Date();
-            const dateInput = document.getElementById('date');
-            
-            // 날짜 포맷팅 (YYYY-MM-DD) - timezone 이슈 방지
-            const yyyy = today.getFullYear();
-            const mm = String(today.getMonth() + 1).padStart(2, '0');
-            const dd = String(today.getDate()).padStart(2, '0');
-            dateInput.value = `${yyyy}-${mm}-${dd}`;
-            
-            document.getElementById('worshipTime').value = "13:00"; 
-            
-            // 폼 제출 이벤트 핸들러 (엔터키 및 모바일 버튼 대응)
-            const form = document.getElementById('minutesForm');
-            form.addEventListener('submit', function(e) {
-                e.preventDefault(); // 새로고침 방지
-                generatePreview();
-            });
-        });
-
-        // 상단 버튼용 트리거
-        function triggerSubmit() {
-            // 폼의 submit 이벤트를 강제로 발생시킴
-            const form = document.getElementById('minutesForm');
-            const event = new Event('submit', {
-                'bubbles': true,
-                'cancelable': true
-            });
-            form.dispatchEvent(event);
         }
+    });
 
-        function generatePreview() {
-            // 사용자 피드백 (작동 확인용)
-            // alert("변환을 시작합니다..."); // 필요시 주석 해제
-
-            try {
-                // 입력값 가져오기
-                const sessionNum = document.getElementById('sessionNum').value;
-                const dateStr = document.getElementById('date').value;
-                const date = dateStr ? new Date(dateStr) : new Date();
-                
-                const worshipTime = document.getElementById('worshipTime').value || "13:00";
-                const prayerName = document.getElementById('prayerName').value || "OOO";
-                const sermonTitle = document.getElementById('sermonTitle').value || "설교제목";
-                const appointedClerk = document.getElementById('appointedClerk').value || "OOO";
-                
-                // 인원
-                const present = document.getElementById('countPresent').value || "0";
-                const proxy = document.getElementById('countProxy').value || "0";
-                const absent = document.getElementById('countAbsent').value || "0";
-
-                // 동의/재청자들 (값이 없으면 공란 처리)
-                const getVal = (id) => document.getElementById(id).value || "OOO";
-
-                const agendaProposer = getVal('agendaProposer');
-                const agendaSeconder = getVal('agendaSeconder');
-                
-                const reportProposer = getVal('reportProposer');
-                const reportSeconder = getVal('reportSeconder');
-
-                const closingProposer = getVal('closingProposer');
-                const closingSeconder = getVal('closingSeconder');
-
-                const budgetProposer = getVal('budgetProposer');
-                const budgetSeconder = getVal('budgetSeconder');
-
-                const closeProposer = getVal('closeProposer');
-                const closeSeconder = getVal('closeSeconder');
-                const closeTime = document.getElementById('closeTime').value || "00:00";
-                const otherBiz = document.getElementById('otherBiz').value || "특이사항 없음.";
-
-                // 시간 포맷팅 (오후 O시 O분)
-                const formatTime = (timeStr) => {
-                    if (!timeStr) return "00:00";
-                    const parts = timeStr.split(':');
-                    if (parts.length < 2) return timeStr;
-                    const h = parseInt(parts[0]);
-                    const m = parts[1];
-                    const ampm = h >= 12 ? '오후' : '오전';
-                    const pmHour = h > 12 ? h - 12 : h;
-                    return `${ampm} ${pmHour}시 ${m}분`;
-                };
-
-                // 데이터 바인딩
-                const setTxt = (id, val) => {
-                    const el = document.getElementById(id);
-                    if(el) el.innerText = val;
-                };
-
-                setTxt('p-sessionNum', sessionNum);
-                setTxt('p-sessionNum2', sessionNum);
-                setTxt('p-sessionNum3', sessionNum);
-
-                setTxt('p-dateYear', date.getFullYear());
-                setTxt('p-dateMonth', date.getMonth() + 1);
-                setTxt('p-dateDay', date.getDate());
-                setTxt('p-dateFull', `${date.getFullYear()}년 ${date.getMonth() + 1}월 ${date.getDate()}일`);
-
-                setTxt('p-nextYear', date.getFullYear() + 1);
-                setTxt('p-nextYear2', date.getFullYear() + 1);
-
-                setTxt('p-worshipTime', formatTime(worshipTime));
-                setTxt('p-prayerName', prayerName);
-                setTxt('p-sermonTitle', sermonTitle);
-                
-                setTxt('p-appointedClerk', appointedClerk);
-                setTxt('p-clerkNameRef', appointedClerk);
-                setTxt('p-clerkNameRef2', appointedClerk);
-                setTxt('p-finalClerk', appointedClerk);
-
-                setTxt('p-countPresent', present);
-                setTxt('p-countProxy', proxy);
-                setTxt('p-countAbsent', absent);
-
-                setTxt('p-agendaProposer', agendaProposer);
-                setTxt('p-agendaSeconder', agendaSeconder);
-
-                setTxt('p-reportProposer', reportProposer);
-                setTxt('p-reportSeconder', reportSeconder);
-
-                setTxt('p-closingProposer', closingProposer);
-                setTxt('p-closingSeconder', closingSeconder);
-
-                setTxt('p-budgetProposer', budgetProposer);
-                setTxt('p-budgetSeconder', budgetSeconder);
-
-                setTxt('p-closeProposer', closeProposer);
-                setTxt('p-closeSeconder', closeSeconder);
-                setTxt('p-closeTime', formatTime(closeTime));
-
-                setTxt('p-otherBiz', otherBiz);
-
-                // 화면 전환
-                document.getElementById('input-section').classList.add('hidden');
-                document.getElementById('preview-section').classList.remove('hidden');
-                window.scrollTo(0,0);
-            
-            } catch (e) {
-                alert("오류가 발생했습니다. 관리자에게 문의하세요.\n" + e.message);
-                console.error(e);
+    // 2. Finance Expenditure Trend (Bar)
+    const ctxFinanceBudget = document.getElementById('financeBudgetChart').getContext('2d');
+    new Chart(ctxFinanceBudget, {
+        type: 'bar',
+        data: {
+            labels: ['2024년 결산', '2025년 결산', '2026년 예산'],
+            datasets: [{
+                label: '일반재정 지출 규모 (단위: 원)',
+                data: [7435378, 16410318, 31700000],
+                backgroundColor: ['#bcaaa4', '#8d6e63', '#5d4037'],
+                borderColor: ['#8d6e63', '#5d4037', '#3e2723'],
+                borderWidth: 1
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: { display: false },
+                title: { display: true, text: '일반재정 지출 흐름 (결산 및 예산)' }
+            },
+            scales: {
+                y: { beginAtZero: true }
             }
         }
+    });
+</script>
 
-        function editMode() {
-            document.getElementById('input-section').classList.remove('hidden');
-            document.getElementById('preview-section').classList.add('hidden');
-            window.scrollTo(0,0);
-        }
-    </script>
 </body>
 </html>
